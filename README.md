@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # e_shoes
 
 A new Flutter project.
@@ -14,3 +15,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# Progress_shoes
+Progress_shoes
+>>>>>>> 11153a098061612819c52a4d442202f8ac9541e1
