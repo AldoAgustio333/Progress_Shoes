@@ -5,10 +5,17 @@ packages:
     dependency: transitive
     description:
       name: async
+<<<<<<< HEAD
       sha256: "758e6d74e971c3e5aceb4110bfd6698efc7f501675bcfe0c775459a8140750eb"
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
+=======
+      sha256: d2872f9c19731c2e5f10444b14686eb7cc85c76274bd6c16e1816bff9a3bab63
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.12.0"
+>>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
   boolean_selector:
     dependency: transitive
     description:
@@ -53,10 +60,17 @@ packages:
     dependency: transitive
     description:
       name: fake_async
+<<<<<<< HEAD
       sha256: "5368f224a74523e8d2e7399ea1638b37aecfca824a3cc4dfdf77bf1fa905ac44"
       url: "https://pub.dev"
     source: hosted
     version: "1.3.3"
+=======
+      sha256: "6a95e56b2449df2273fd8c45a662d6947ce1ebb7aafe80e550a3f68297f3cacc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.2"
+>>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
   flutter:
     dependency: "direct main"
     description: flutter
@@ -79,10 +93,17 @@ packages:
     dependency: transitive
     description:
       name: leak_tracker
+<<<<<<< HEAD
       sha256: "6bb818ecbdffe216e81182c2f0714a2e62b593f4a4f13098713ff1685dfb6ab0"
       url: "https://pub.dev"
     source: hosted
     version: "10.0.9"
+=======
+      sha256: c35baad643ba394b40aac41080300150a4f08fd0fd6a10378f8f7c6bc161acec
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.0.8"
+>>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
   leak_tracker_flutter_testing:
     dependency: transitive
     description:
@@ -131,6 +152,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.16.0"
+<<<<<<< HEAD
   nested:
     dependency: transitive
     description:
@@ -139,6 +161,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+=======
+>>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
   path:
     dependency: transitive
     description:
@@ -147,6 +171,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+<<<<<<< HEAD
   provider:
     dependency: "direct main"
     description:
@@ -155,6 +180,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.5"
+=======
+>>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
   sky_engine:
     dependency: transitive
     description: flutter
@@ -220,10 +247,17 @@ packages:
     dependency: transitive
     description:
       name: vm_service
+<<<<<<< HEAD
       sha256: ddfa8d30d89985b96407efce8acbdd124701f96741f2d981ca860662f1c0dc02
       url: "https://pub.dev"
     source: hosted
     version: "15.0.0"
+=======
+      sha256: "0968250880a6c5fe7edc067ed0a13d4bae1577fe2771dcf3010d52c4a9d3ca14"
+      url: "https://pub.dev"
+    source: hosted
+    version: "14.3.1"
+>>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
 sdks:
   dart: ">=3.7.0 <4.0.0"
   flutter: ">=3.18.0-18.0.pre.54"
