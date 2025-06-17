@@ -1,54 +1,31 @@
+// lib/store_page_content.dart
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import '../data/dummy_products.dart'; // Pastikan di sini sudah List<Product>
-import 'search_page.dart';
-import 'product_detail_page.dart';
-import 'main.dart';
-import 'package:provider/provider.dart';
-import '../models/product.dart';
-import '../models/cart_model.dart';
+import '../data/dummy_products.dart'; // Pastikan path ini benar
+import 'product_detail_page.dart'; // Pastikan path ini benar
+import '../models/product.dart'; // Pastikan path ini benar
+import '../models/cart_model.dart'; // Pastikan path ini benar
+import 'CartPage.dart'; // Pastikan path ini benar
 
-import 'CartPage.dart';
-=======
-import '../data/dummy_products.dart';
-import 'search_page.dart';
-import 'product_detail_page.dart';
-import 'main.dart';
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
-
-class StorePage extends StatefulWidget {
-  const StorePage({super.key});
+class StorePageContent extends StatefulWidget {
+  const StorePageContent({super.key});
 
   @override
-  _StorePageState createState() => _StorePageState();
+  _StorePageContentState createState() => _StorePageContentState();
 }
 
-class _StorePageState extends State<StorePage> {
+class _StorePageContentState extends State<StorePageContent> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
-<<<<<<< HEAD
-  // Ubah ke List<Product>
   List<Product> get filteredProducts {
     return _searchQuery.isEmpty
-        ? products
-        : products.where((product) =>
-        product.name.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
-  }
-
-
-=======
-  // Filter produk berdasarkan input pencarian
-  List<Map<String, dynamic>> get filteredProducts {
-    return _searchQuery.isEmpty
-        ? products
+        ? products // Asumsikan products di dummy_products.dart adalah List<Product>
         : products
-        .where((product) =>
-        product['name'].toLowerCase().contains(_searchQuery.toLowerCase()))
-        .toList();
+            .where((product) =>
+                product.name.toLowerCase().contains(_searchQuery.toLowerCase()))
+            .toList();
   }
 
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,14 +47,9 @@ class _StorePageState extends State<StorePage> {
               color: Colors.white,
             ),
             onPressed: () {
-<<<<<<< HEAD
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const CartPage()),
-=======
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Cart diklik!')),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
               );
             },
           ),
@@ -137,13 +109,9 @@ class _StorePageState extends State<StorePage> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.search, color: Colors.orange),
-<<<<<<< HEAD
-                            onPressed: () {},
-=======
                             onPressed: () {
                               // Aksi pencarian sudah ditangani dengan onChanged pada TextField
                             },
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                           )
                         ],
                       ),
@@ -188,11 +156,7 @@ class _StorePageState extends State<StorePage> {
                                 topRight: Radius.circular(16),
                               ),
                               child: Image.asset(
-<<<<<<< HEAD
                                 product.image,
-=======
-                                product['image'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                                 height: 120,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
@@ -205,11 +169,7 @@ class _StorePageState extends State<StorePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-<<<<<<< HEAD
                                   product.name,
-=======
-                                  product['name'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -217,11 +177,7 @@ class _StorePageState extends State<StorePage> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-<<<<<<< HEAD
                                   product.desc,
-=======
-                                  product['desc'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                                   style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey,
@@ -239,11 +195,7 @@ class _StorePageState extends State<StorePage> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 6, horizontal: 8),
                                       child: Text(
-<<<<<<< HEAD
-                                        product.price.toString(),
-=======
-                                        product['price'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
+                                        'Rp${product.price}',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -266,74 +218,6 @@ class _StorePageState extends State<StorePage> {
           ),
         ),
       ),
-<<<<<<< HEAD
-
-=======
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 0) {
-            // Pindah ke halaman utama (HomePage)
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const MyApp()),
-            );
-          } else if (index == 1) {
-            // Pindah ke halaman SearchPage
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SearchPage()),
-            );
-          } else if (index == 2) {
-            // Pindah ke halaman StorePage
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const StorePage()),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Tab ke-$index ditekan')),
-            );
-          }
-        },
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: Colors.orange,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.store,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),
-            label: '',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'Riwayat',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-      ),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
     );
   }
 }

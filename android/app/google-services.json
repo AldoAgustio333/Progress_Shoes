@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "875874761809",
+    "project_id": "toko-sepatu-eiger-5ab03",
+    "storage_bucket": "toko-sepatu-eiger-5ab03.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875874761809:android:6aff670eebefd2439a8c70",
+        "android_client_info": {
+          "package_name": "com.example.e_shoes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1Q6GwbEYjUV7FlTVQR372ADNJkAUSfko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

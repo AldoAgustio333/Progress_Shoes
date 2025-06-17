@@ -1,7 +1,9 @@
+// lib/checkout_page.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/cart_model.dart';
-import '../models/history_model.dart';
+import '../models/cart_model.dart'; // Mengimpor CartModel (yang berisi CartItem)
+import '../models/history_model.dart'; // Mengimpor HistoryModel
+import '../models/product.dart'; // Mengimpor Product
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
@@ -18,28 +20,38 @@ class _CheckoutPageState extends State<CheckoutPage> {
   String shippingMethod = 'JNE Regular';
   String shippingDateRange = '18-20 Mar';
 
-  // Contoh biaya admin bank
-  int adminBankFee = 5000;
+  // Contoh biaya admin bank (ubah ke double)
+  double adminBankFee = 5000.0; // Mengubah int menjadi double
+
+  // Mengubah semua variabel harga menjadi double
+  double subtotalProduk = 0.0;
+  double shippingCost = 0.0; // Mengubah int menjadi double
+  double totalHarga = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _hitungTotal();
+  }
+
+  void _hitungTotal() {
+    final cart = Provider.of<CartModel>(context, listen: false);
+    double tempSubtotal = 0.0;
+    for (var item in cart.items) { // PERUBAHAN: Gunakan cart.items
+      tempSubtotal += item.product.price * item.quantity; // Menghapus int.parse()
+    }
+    setState(() {
+      subtotalProduk = tempSubtotal;
+      totalHarga = subtotalProduk + shippingCost + adminBankFee;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<CartModel>(context);
-    final items = cart.items;
+    final cart = Provider.of<CartModel>(context); // Ambil instance CartModel
+    final history = Provider.of<HistoryModel>(context, listen: false); // Akses HistoryModel
 
-    // Hitung subtotal produk
-    int subtotalProduk = 0;
-    for (var item in items) {
-      subtotalProduk += int.parse(item.product.price) * item.quantity;
-    }
-
-    // Contoh biaya pengiriman (bisa diupdate sesuai pilihan)
-    int shippingCost = 0;
-
-    // Hitung total pembayaran
-    int totalHarga = subtotalProduk + shippingCost + adminBankFee;
-
-    // Contoh alamat
-    final alamat = 'Jl. Merdeka No. 123, Bandung, Jawa Barat';
+    final alamat = 'Jl. Merdeka No. 123, Bandung, Jawa Barat'; // Contoh alamat
 
     // Daftar metode pembayaran
     final paymentMethods = [
@@ -121,10 +133,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
             // List produk dengan metode pembayaran ditempel ke card produk
             Expanded(
               child: ListView.builder(
-                itemCount: items.length + 1, // +1 buat section metode pembayaran
+                itemCount: cart.items.length + 1, // PERUBAHAN: Gunakan cart.items
                 itemBuilder: (context, index) {
-                  if (index < items.length) {
-                    final cartItem = items[index];
+                  if (index < cart.items.length) { // PERUBAHAN: Gunakan cart.items
+                    final cartItem = cart.items[index]; // PERUBAHAN: Gunakan cart.items
                     final product = cartItem.product;
 
                     return Column(
@@ -136,7 +148,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             title: Text(product.name),
                             subtitle: Text('Jumlah: ${cartItem.quantity}'),
                             trailing: Text(
-                              'Rp ${int.parse(product.price) * cartItem.quantity}',
+                              'Rp ${(product.price * cartItem.quantity).toStringAsFixed(0)}', // Menghapus int.parse()
                               style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -165,6 +177,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               onTap: () {
                                 setState(() {
                                   selectedPaymentMethod = method;
+                                  // Perbarui total pembayaran jika biaya admin berbeda per metode
+                                  // Contoh: adminBankFee = (method == 'Transfer Bank' ? 5000.0 : 0.0);
+                                  _hitungTotal();
                                 });
                               },
                               child: Container(
@@ -273,17 +288,21 @@ class _CheckoutPageState extends State<CheckoutPage> {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  final historyProvider = Provider.of<HistoryModel>(context, listen: false);
-                  historyProvider.addToHistory(cart.items); // simpan semua item pembelian ke history
+                  if (cart.items.isNotEmpty) {
+                    history.addOrder(cart.items); // simpan semua item pembelian ke history
+                    cart.clearCart(); // kosongkan cart setelah beli
 
-                  cart.clearCart(); // kosongkan cart setelah beli
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Pembayaran dikonfirmasi!')),
+                    );
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Pembayaran dikonfirmasi!')),
-                  );
-
-                  // Pindah ke halaman riwayat
-                  Navigator.pushNamed(context, '/riwayat');
+                    // Pindah ke halaman riwayat
+                    Navigator.pushNamed(context, '/riwayat');
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Keranjang Anda kosong, tidak dapat checkout.')),
+                    );
+                  }
                 },
                 icon: const Icon(Icons.payment),
                 label: const Text('Konfirmasi Pembayaran'),
@@ -301,7 +320,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
     );
   }
 
-  Widget _buildPriceRow(String label, int amount, {bool isTotal = false}) {
+  // Mengubah _buildPriceRow agar menerima double untuk amount
+  Widget _buildPriceRow(String label, double amount, {bool isTotal = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -315,7 +335,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
           ),
           Text(
-            'Rp $amount',
+            'Rp ${amount.toStringAsFixed(0)}', // Format sebagai string tanpa desimal
             style: TextStyle(
               fontSize: isTotal ? 18 : 16,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,

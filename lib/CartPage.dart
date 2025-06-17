@@ -1,20 +1,45 @@
+// lib/CartPage.dart
 import 'package:flutter/material.dart';
-import '../models/cart_model.dart';
 import 'package:provider/provider.dart';
-import 'checkout_page.dart';
+import '../models/cart_model.dart'; // Mengimpor CartModel (yang berisi CartItem)
+import 'checkout_page.dart'; // Pastikan ini mengarah ke checkout_page.dart yang benar
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
+
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  // Mengubah totalHarga menjadi double
+  double totalHarga = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Panggil _hitungTotalHarga di initState setelah widget siap
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _hitungTotalHarga();
+    });
+  }
+
+  // Metode ini akan dipanggil saat keranjang berubah
+  void _hitungTotalHarga() {
+    final cart = Provider.of<CartModel>(context, listen: false);
+    setState(() {
+      totalHarga = cart.totalPrice; // Menggunakan getter totalPrice dari CartModel
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartModel>(context);
 
-    // Hitung total harga
-    int totalHarga = 0;
-    for (var item in cart.items) {
-      totalHarga += int.parse(item.product.price) * item.quantity;
-    }
+    // Tambahkan listener untuk memperbarui totalHarga saat keranjang berubah
+    // Pastikan untuk menghapus listener di dispose untuk mencegah memory leak
+    cart.removeListener(_hitungTotalHarga); // Hapus listener lama jika ada (untuk safety)
+    cart.addListener(_hitungTotalHarga); // Tambahkan listener baru
 
     return Scaffold(
       appBar: AppBar(
@@ -24,40 +49,43 @@ class CartPage extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child:
-                cart.items.isEmpty
-                    ? const Center(child: Text('Keranjang kosong'))
-                    : ListView.builder(
-                      itemCount: cart.items.length,
-                      itemBuilder: (context, index) {
-                        final cartItem = cart.items[index];
-                        final product = cartItem.product;
+            child: cart.items.isEmpty
+                ? const Center(child: Text('Keranjang kosong'))
+                : ListView.builder(
+                    itemCount: cart.items.length,
+                    itemBuilder: (context, index) {
+                      final cartItem = cart.items[index];
+                      final product = cartItem.product;
 
-                        return ListTile(
-                          leading: Image.asset(product.image, width: 50),
-                          title: Text(product.name),
-                          subtitle: Text('Harga: ${product.price}'),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.remove),
-                                onPressed: () {
-                                  cart.remove(product);
-                                },
-                              ),
-                              Text('${cartItem.quantity}'),
-                              IconButton(
-                                icon: const Icon(Icons.add),
-                                onPressed: () {
-                                  cart.add(product);
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                      return ListTile(
+                        leading: Image.asset(product.image, width: 50),
+                        title: Text(product.name),
+                        // Menampilkan harga produk sebagai double dan format string
+                        subtitle: Text('Harga: Rp${product.price.toStringAsFixed(0)}'),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.remove),
+                              onPressed: () {
+                                // Panggil remove dengan Product, bukan CartItem
+                                cart.remove(product); // Sesuai dengan CartModel.remove(Product product)
+                                // Tidak perlu panggil _hitungTotalHarga() secara eksplisit karena notifyListeners() di CartModel akan memicunya
+                              },
+                            ),
+                            Text('${cartItem.quantity}'),
+                            IconButton(
+                              icon: const Icon(Icons.add),
+                              onPressed: () {
+                                cart.add(product); // Sesuai dengan CartModel.add(Product product)
+                                // Tidak perlu panggil _hitungTotalHarga() secara eksplisit karena notifyListeners() di CartModel akan memicunya
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
           ),
           // Footer section
           Container(
@@ -78,7 +106,7 @@ class CartPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Rp $totalHarga',
+                      'Rp ${totalHarga.toStringAsFixed(0)}', // Format sebagai string tanpa desimal
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -98,12 +126,19 @@ class CartPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CheckoutPage(),
-                      ),
-                    );
+                    // Hanya izinkan checkout jika keranjang tidak kosong
+                    if (cart.items.isNotEmpty) {
+                       Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CheckoutPage(), // Pastikan CheckoutPage bisa const atau hapus const
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Keranjang Anda kosong!')),
+                      );
+                    }
                   },
                   child: const Text('Beli Sekarang'),
                 ),
@@ -113,5 +148,12 @@ class CartPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // Penting: Hapus listener saat widget dibuang untuk mencegah memory leak
+    Provider.of<CartModel>(context, listen: false).removeListener(_hitungTotalHarga);
+    super.dispose();
   }
 }

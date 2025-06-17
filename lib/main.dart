@@ -1,13 +1,45 @@
-<<<<<<< HEAD
+// lib/main.dart
+
 import 'package:flutter/material.dart';
-import 'store_page.dart';
-import 'search_page.dart';
-import 'riwayat_page.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart'; // <-- DITAMBAHKAN: Import Firebase Core
+import 'firebase_options.dart';                   // <-- DITAMBAHKAN: Import file konfigurasi Firebase
+
+// Import model Anda
 import 'models/cart_model.dart';
 import 'models/history_model.dart';
+import 'models/product.dart';
 
-void main() {
+// Impor halaman-halaman dari root lib/
+import 'CartPage.dart';
+import 'checkout_page.dart';
+import 'detail_riwayat_page.dart';
+import 'halaman_chat_toko.dart';
+import 'halaman_toko.dart'; // Jika masih ada dan digunakan
+import 'product_detail_page.dart';
+import 'riwayat_page.dart';
+import 'profile_page.dart';
+
+// Impor halaman-halaman konten yang baru (tanpa BottomNavigationBar)
+import 'home_page_content.dart'; // HomePageContent
+import 'search_page_content.dart'; // SearchPageContent
+import 'store_page_content.dart'; // StorePageContent
+
+// Impor halaman-halaman dari screens/
+import 'catalog.dart'; // Jika ini adalah file catalog.dart
+import 'order_detail_page.dart';
+
+
+// <-- DITAMBAHKAN: 'async' agar bisa menggunakan 'await'
+void main() async {
+  // <-- DITAMBAHKAN: Memastikan Flutter siap sebelum menjalankan kode async
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // <-- DITAMBAHKAN: Menginisialisasi Firebase dengan konfigurasi platform saat ini
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(
     MultiProvider(
       providers: [
@@ -19,57 +51,120 @@ void main() {
   );
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(),
-=======
-// main.dart
-import 'package:flutter/material.dart';
-import 'screens/home_page.dart';
-import 'screens/history_page.dart';
-import 'screens/order_detail_page.dart';
-import 'screens/cart_page.dart';
-import 'screens/checkout.dart';
-import 'screens/catalog.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Eiger Footwear App',
+      title: 'Eiger Footwear',
       theme: ThemeData(
         primarySwatch: Colors.orange,
         hintColor: Colors.grey.shade400,
         fontFamily: 'Roboto',
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: LoadingPage(), // Halaman loading sebagai halaman awal
+      debugShowCheckedModeBanner: false,
+      home: const SplashScreen(),
       routes: {
-        '/home': (context) => HomePage(),
-        '/history': (context) => HistoryPage(),
-        '/order_detail': (context) => OrderDetailPage(),
+        '/home': (context) => const MyHomePage(),
         '/cart': (context) => CartPage(),
         '/checkout': (context) => CheckoutPage(),
+        '/riwayat': (context) => RiwayatPage(),
+        '/detail_riwayat': (context) => DetailRiwayatPage(item: ModalRoute.of(context)!.settings.arguments as CartItem),
+        '/halaman_chat_toko': (context) => HalamanChatToko(),
         '/catalog': (context) => CatalogPage(),
+        '/order_detail': (context) => OrderDetailPage(),
+        '/profile': (context) => const ProfilePage(),
+
+        '/product_detail': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments;
+          if (args is Product) {
+            return ProductDetailPage(product: args);
+          }
+          return const Text('Error: Product detail not found');
+        },
       },
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
     );
   }
 }
 
-<<<<<<< HEAD
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFFF9800),
+              Color(0xFFFFB74D),
+            ],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                'assets/images/eiger_logo_full.png',
+                height: 80,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'EIGER',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54,
+                ),
+              ),
+              const Text(
+                'FOOTWEAR',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 24,
+                  color: Colors.black54,
+                ),
+              ),
+              const SizedBox(height: 48),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MyHomePage()),
+                  );
+                  print('Get Started button pressed');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 15,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  'Get Started',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// MyHomePage (Shell Navigasi Utama)
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -80,28 +175,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
-  final List<String> produkUtama = [
-    'Tas Gunung Eiger',
-    'Sepatu Hiking',
-    'Jaket Waterproof',
-    'Kacamata Polarized',
-    'Kompas Digital',
-  ];
-
-  final List<String> produkRekomendasi = [
-    'Carrier 45L',
-    'Tenda Dome 2P',
-    'Senter LED Tahan Air',
-    'Sarung Tangan Outdoor',
-    'Kaos Quick Dry',
-  ];
-
   final List<Widget> _pages = [
-    HomeContent(),
-    SearchPage(),
-    StorePage(),
+    const HomePageContent(),
+    const SearchPageContent(),
+    const StorePageContent(),
     RiwayatPage(),
-    Center(child: Text('Profile Page')), // Ganti dengan halaman profil jika ada
+    const ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -113,7 +192,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -121,266 +203,38 @@ class _MyHomePageState extends State<MyHomePage> {
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
         items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: (_selectedIndex == 0) ? Colors.orange : Colors.grey),
             label: 'Home',
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search, color: (_selectedIndex == 1) ? Colors.orange : Colors.grey),
             label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: _selectedIndex == 2 ? Colors.orange : Colors.transparent,
+              decoration: const BoxDecoration(
+                color: Colors.orange,
                 shape: BoxShape.circle,
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.store,
-                color: _selectedIndex == 2 ? Colors.white : Colors.grey,
-                size: 30,
+                color: Colors.white,
+                size: 35,
               ),
             ),
-            label: '',
+            label: 'Toko',
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.history),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history, color: (_selectedIndex == 3) ? Colors.orange : Colors.grey),
             label: 'Riwayat',
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person, color: (_selectedIndex == 4) ? Colors.orange : Colors.grey),
             label: 'Profile',
           ),
         ],
-      ),
-    );
-  }
-}
-
-class HomeContent extends StatelessWidget {
-  const HomeContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final produkUtama = [
-      'Tas Gunung Eiger',
-      'Sepatu Hiking',
-      'Jaket Waterproof',
-      'Kacamata Polarized',
-      'Kompas Digital',
-    ];
-
-    final produkRekomendasi = [
-      'Carrier 45L',
-      'Tenda Dome 2P',
-      'Senter LED Tahan Air',
-      'Sarung Tangan Outdoor',
-      'Kaos Quick Dry',
-    ];
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orange,
-        title: const Text(
-          'EIGER',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart, color: Colors.white),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Cart diklik!')),
-              );
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Image.asset('assets/images/banner.png', width: double.infinity, fit: BoxFit.cover),
-            const SizedBox(height: 20),
-
-            SizedBox(
-              height: 180,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: produkUtama.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: 150,
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Center(
-                              child: Image.asset(
-                                'assets/images/product${index + 1}.png',
-                                fit: BoxFit.contain,
-                                height: 80,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            produkUtama[index],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'Rekomendasi produk untukmu',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  Text(
-                    'Lihat lainnya',
-                    style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold, fontSize: 14),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 16),
-            SizedBox(
-              height: 210,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: produkRekomendasi.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: 160,
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: const [
-                        BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 100,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.grey[200],
-                            ),
-                            child: Center(
-                              child: Image.asset(
-                                'assets/images/popular${index + 1}.png',
-                                fit: BoxFit.contain,
-                                height: 80,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            produkRekomendasi[index],
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
-                          ),
-                          const SizedBox(height: 4),
-                          const Text(
-                            'Produk original berkualitas',
-                            style: TextStyle(fontSize: 8, color: Colors.grey),
-                          ),
-                          const Spacer(),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.orange,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Text(
-                              'Rp 150.000',
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 20),
-            Image.asset('assets/images/banner2.png', width: double.infinity, fit: BoxFit.cover),
-=======
-class LoadingPage extends StatefulWidget {
-  @override
-  _LoadingPageState createState() => _LoadingPageState();
-}
-
-class _LoadingPageState extends State<LoadingPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              'assets/images/eiger_logo_full.png', // Ganti dengan path logo Eiger full Anda
-              height: 150,
-            ),
-            SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(
-                  context,
-                  '/home',
-                ); // Beralih ke halaman beranda
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: Text('Get Started', style: TextStyle(fontSize: 18)),
-            ),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
-          ],
-        ),
       ),
     );
   }

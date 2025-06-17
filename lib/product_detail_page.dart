@@ -1,24 +1,15 @@
 import 'package:flutter/material.dart';
 import 'halaman_toko.dart';
 import 'halaman_chat_toko.dart';
-<<<<<<< HEAD
-import 'package:provider/provider.dart';
-import '../models/product.dart';
-import '../models/cart_model.dart';
-import 'CartPage.dart';
+import 'package:provider/provider.dart'; // Dipertahankan dari HEAD
+import '../models/product.dart'; // Dipertahankan dari HEAD
+import '../models/cart_model.dart'; // Dipertahankan dari HEAD
+import 'CartPage.dart'; // Dipertahankan dari HEAD
 
 
 class ProductDetailPage extends StatefulWidget {
-
-
+  // Menggunakan model Product untuk tipe yang lebih kuat dan aman
   final Product product;
-
-=======
-
-
-class ProductDetailPage extends StatefulWidget {
-  final Map<String, dynamic> product;
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
 
   const ProductDetailPage({super.key, required this.product});
 
@@ -33,7 +24,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   void initState() {
     super.initState();
-<<<<<<< HEAD
+    // Mengakses properti dari objek product
     selectedImage = widget.product.image;
     previewImages = [
       widget.product.image,
@@ -41,17 +32,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       widget.product.imageBack,
       widget.product.imageTop,
       widget.product.imageBottom,
-=======
-
-    selectedImage = widget.product['image'] ?? 'assets/images/product2.png';
-
-    previewImages = [
-      widget.product['image'] ?? 'assets/images/product2.png',
-      widget.product['image_side'] ?? 'assets/images/sepatu_side.png',
-      widget.product['image_back'] ?? 'assets/images/sepatu_back.png',
-      widget.product['image_top'] ?? 'assets/images/sepatu_atas.png',
-      widget.product['image_bottom'] ?? 'assets/images/sepatu_bottom.png',
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
     ];
   }
 
@@ -73,14 +53,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           IconButton(
             icon: const Icon(Icons.shopping_cart, color: Colors.white),
             onPressed: () {
-<<<<<<< HEAD
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const CartPage()),
-=======
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Cart diklik!')),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
+                MaterialPageRoute(builder: (context) => const CartPage()), // Dipertahankan dari HEAD
               );
             },
           ),
@@ -150,16 +125,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               children: [
                 Expanded(
                   child: Text(
-<<<<<<< HEAD
-                    widget.product.name,
+                    widget.product.name, // Menggunakan widget.product.name
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-
-=======
-                    widget.product['name'],
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                 ),
                 const SizedBox(width: 16),
                 Container(
@@ -169,24 +137,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-<<<<<<< HEAD
-                    widget.product.price.toString(),
-=======
-                    widget.product['price'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
+                    // Menggunakan widget.product.price.toString() untuk konsistensi
+                    'Rp${widget.product.price}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-<<<<<<< HEAD
-
                 ),
-
-=======
-                ),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
               ],
             ),
 
@@ -196,26 +155,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-<<<<<<< HEAD
-                widget.product.desc
+                widget.product.desc // Menggunakan widget.product.desc
                     .split(' ')
                     .take(3)
                     .join(' ') + '...',
                 textAlign: TextAlign.left,
                 style: const TextStyle(fontSize: 16, color: Colors.grey),
               ),
-
-=======
-                widget.product['desc']
-                    ?.toString()
-                    .split(' ')
-                    .take(3)
-                    .join(' ') ??
-                    '' + '...',
-                textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
-              ),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
             ),
 
             const SizedBox(height: 16),
@@ -270,9 +216,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         'Dengan material berkualitas tinggi dan desain ergonomis, sepatu ini cocok digunakan untuk jalan-jalan, '
                         'berolahraga, maupun kegiatan kasual lainnya. Bagian dalam sepatu dilapisi dengan bahan yang lembut dan '
                         'menyerap keringat, sementara sol luar terbuat dari karet anti-selip yang tahan lama. '
-                        'menyerap keringat, sementara sol luar terbuat dari karet anti-selip yang tahan lama. '
-                        'menyerap keringat, sementara sol luar terbuat dari karet anti-selip yang tahan lama. '
-                        'menyerap keringat, sementara sol luar terbuat dari karet anti-selip yang tahan lama. '
                         'Tersedia dalam berbagai ukuran dan warna, sepatu ini tidak hanya nyaman tapi juga tampil stylish untuk segala usia.',
                     style: TextStyle(
                       fontSize: 14,
@@ -285,79 +228,72 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
             ),
 
-            const SizedBox(height: 16), // Menambahkan ruang antara section Deskripsi Produk dan bagian berikutnya
+            const SizedBox(height: 16),
 
-// Section Informasi Toko dan Chat Toko
-        // Section Informasi Toko dan Chat Toko
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Kolom pertama: Informasi Toko
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            // Section Informasi Toko dan Chat Toko
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HalamanToko()),
-                      );
-                    },
-                    child: const Text(
-                      'Lihat Toko',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.orange,
-
+                  // Kolom pertama: Informasi Toko
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => HalamanToko()),
+                          );
+                        },
+                        child: const Text(
+                          'Lihat Toko',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.orange,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
+                  ),
+
+                  // Kolom kedua: Chat Toko
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => HalamanChatToko()),
+                          );
+                        },
+                        child: const Text(
+                          'Chat Toko',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.orange,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ),
                 ],
               ),
-
-              // Kolom kedua: Chat Toko
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HalamanChatToko()),
-                      );
-                    },
-                    child: const Text(
-                      'Chat Toko',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.orange,
-
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                ],
-              ),
-            ],
-          ),
             ),
-
-
-
 
             const SizedBox(height: 16),
 
-          // Detail Produk
+            // Detail Produk
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -418,11 +354,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Harga'),
-<<<<<<< HEAD
-                      Text('${widget.product.price}')
-=======
-                      Text('${widget.product['price']}')
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
+                      Text('Rp${widget.product.price}'), // Menggunakan widget.product.price
                     ],
                   ),
                 ],
@@ -501,15 +433,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
-                        Text('⭐                    10%   ...........................1'),
+                        Text('⭐            10%   ...........................1'),
                         SizedBox(height: 4),
-                        Text('⭐⭐                 20%   ........................ 2'),
+                        Text('⭐⭐           20%   ........................ 2'),
                         SizedBox(height: 4),
-                        Text('⭐⭐⭐             30%   ....................... 3'),
+                        Text('⭐⭐⭐          30%   ....................... 3'),
                         SizedBox(height: 4),
                         Text('⭐⭐⭐⭐        10%   ....................... 4'),
                         SizedBox(height: 4),
-                        Text('⭐⭐⭐⭐⭐    30%   ....................... 5'),
+                        Text('⭐⭐⭐⭐⭐       30%   ....................... 5'),
                       ],
                     ),
                   ),
@@ -522,10 +454,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-<<<<<<< HEAD
-                
-=======
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                 color: Colors.grey.shade100,
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -617,7 +545,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const SizedBox(height: 24),
 
-// Section: Tombol Beli Sekarang
+            // Section: Tombol Beli Sekarang
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               decoration: BoxDecoration(
@@ -640,11 +568,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-<<<<<<< HEAD
-                        widget.product.price,
-=======
-                        widget.product['price'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
+                        'Rp${widget.product.price}', // Menggunakan widget.product.price
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -660,10 +584,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       // Tombol Beli Sekarang
                       ElevatedButton(
                         onPressed: () {
-<<<<<<< HEAD
-
-=======
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Beli Sekarang diklik!')),
                           );
@@ -683,21 +603,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       const SizedBox(width: 8),
                       // Icon Cart
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
                           icon: const Icon(Icons.shopping_cart, color: Colors.orange),
                           onPressed: () {
-<<<<<<< HEAD
-                            Provider.of<CartModel>(context, listen: false).add(widget.product);
+                            Provider.of<CartModel>(context, listen: false).add(widget.product); // Dipertahankan dari HEAD
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Berhasil di tambahkan')),
-=======
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Tambah ke keranjang')),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                             );
                           },
                         ),
@@ -710,15 +625,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           ],
         ),
       ),
-<<<<<<< HEAD
     );
-=======
-
-
-    );
-
-
-
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
   }
 }
