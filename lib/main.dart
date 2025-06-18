@@ -1,41 +1,32 @@
-// lib/main.dart
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart'; // <-- DITAMBAHKAN: Import Firebase Core
-import 'firebase_options.dart';                   // <-- DITAMBAHKAN: Import file konfigurasi Firebase
+import 'package:firebase_core/firebase_core.dart'; 
+import 'firebase_options.dart';                   
 
-// Import model Anda
 import 'models/cart_model.dart';
 import 'models/history_model.dart';
 import 'models/product.dart';
 
-// Impor halaman-halaman dari root lib/
 import 'CartPage.dart';
 import 'checkout_page.dart';
 import 'detail_riwayat_page.dart';
 import 'halaman_chat_toko.dart';
-import 'halaman_toko.dart'; // Jika masih ada dan digunakan
+import 'halaman_toko.dart'; 
 import 'product_detail_page.dart';
 import 'riwayat_page.dart';
 import 'profile_page.dart';
 
-// Impor halaman-halaman konten yang baru (tanpa BottomNavigationBar)
-import 'home_page_content.dart'; // HomePageContent
-import 'search_page_content.dart'; // SearchPageContent
-import 'store_page_content.dart'; // StorePageContent
+import 'home_page_content.dart'; 
+import 'search_page_content.dart'; 
+import 'store_page_content.dart'; 
 
-// Impor halaman-halaman dari screens/
-import 'catalog.dart'; // Jika ini adalah file catalog.dart
+import 'catalog.dart'; 
 import 'order_detail_page.dart';
 
-
-// <-- DITAMBAHKAN: 'async' agar bisa menggunakan 'await'
 void main() async {
-  // <-- DITAMBAHKAN: Memastikan Flutter siap sebelum menjalankan kode async
+  
   WidgetsFlutterBinding.ensureInitialized();
   
-  // <-- DITAMBAHKAN: Menginisialisasi Firebase dengan konfigurasi platform saat ini
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -164,7 +155,6 @@ class SplashScreen extends StatelessWidget {
   }
 }
 
-// MyHomePage (Shell Navigasi Utama)
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 

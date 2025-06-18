@@ -2,97 +2,136 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:e_shoes/models/history_model.dart';
-import 'package:e_shoes/models/cart_model.dart'; // Impor CartModel untuk definisi CartItem
-import 'detail_riwayat_page.dart';
-import 'CartPage.dart'; // Import CartPage untuk navigasi
+import 'package:e_shoes/models/cart_model.dart';
+import 'detail_riwayat_page.dart'; 
+import 'CartPage.dart';
 
-class RiwayatPage extends StatefulWidget {
+class RiwayatPage extends StatelessWidget {
   const RiwayatPage({super.key});
 
   @override
-  State<RiwayatPage> createState() => _RiwayatPageState();
-}
-
-class _RiwayatPageState extends State<RiwayatPage> {
-  @override
   Widget build(BuildContext context) {
-    // Ambil HistoryModel dari Provider
     final historyProvider = Provider.of<HistoryModel>(context);
-    final orders = historyProvider.orders; // Mengakses getter 'orders' dari HistoryModel
+    final orders = historyProvider.orders;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
         title: const Text(
-          'EIGER', // Mengubah judul menjadi 'EIGER'
+          'Riwayat Pesanan',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
-        centerTitle: true, // Membuat judul di tengah
+        centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.shopping_cart,
-              color: Colors.white,
-            ),
+            icon: const Icon(Icons.shopping_cart, color: Colors.white),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const CartPage()), // Navigasi ke CartPage
+                MaterialPageRoute(builder: (context) => const CartPage()),
               );
             },
           ),
         ],
       ),
-      body: orders.isEmpty // Menggunakan 'orders' di sini
+      body: orders.isEmpty
           ? const Center(
-              child: Text(
-                'Belum ada riwayat pembelian.',
-                style: TextStyle(fontSize: 18),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.history_toggle_off, size: 80, color: Colors.grey),
+                  SizedBox(height: 16),
+                  Text(
+                    'Belum ada riwayat pembelian.',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                ],
               ),
             )
           : ListView.builder(
-              itemCount: orders.length, // Jumlah pesanan
+              padding: const EdgeInsets.all(8.0),
+              itemCount: orders.length,
               itemBuilder: (context, orderIndex) {
-                final order = orders[orderIndex]; // Setiap 'order' adalah List<CartItem>
-
-                // Hitung total harga untuk pesanan ini
+                final orderItems = orders[orderIndex];
                 double totalOrderPrice = 0.0;
-                for (var item in order) {
+                int totalItems = 0;
+                for (var item in orderItems) {
                   totalOrderPrice += item.product.price * item.quantity;
+                  totalItems += item.quantity;
                 }
 
                 return Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: ExpansionTile( // Menggunakan ExpansionTile untuk setiap pesanan
-                    title: Text(
-                      'Pesanan #${orderIndex + 1} - Total: Rp${totalOrderPrice.toStringAsFixed(0)}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    children: order.map((item) {
-                      // Ini adalah item individual dalam pesanan
-                      return ListTile(
-                        leading: Image.asset(item.product.image, width: 50),
-                        title: Text(item.product.name),
-                        subtitle: Text('Jumlah: ${item.quantity}'),
-                        trailing: Text(
-                          'Rp ${(item.product.price * item.quantity).toStringAsFixed(0)}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        onTap: () {
-                          // Navigasi ke DetailRiwayatPage untuk item ini
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailRiwayatPage(item: item),
+                  elevation: 4,
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Pesanan #${orderIndex + 1}',
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                             ),
-                          );
-                        },
-                      );
-                    }).toList(),
+                            Text(
+                              '${totalItems} item',
+                              style: const TextStyle(color: Colors.grey, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                        const Divider(height: 20),
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: Image.asset(orderItems.first.product.image, width: 50),
+                          title: Text(orderItems.first.product.name),
+                          subtitle: Text(
+                            orderItems.length > 1
+                                ? 'dan ${orderItems.length - 1} produk lainnya...'
+                                : 'Jumlah: ${orderItems.first.quantity}',
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Total Belanja', style: TextStyle(color: Colors.grey)),
+                                Text(
+                                  'Rp${totalOrderPrice.toStringAsFixed(0)}',
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.orange),
+                                ),
+                              ],
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailRiwayatPage(
+                                      item: orderItems.first, 
+                                    ),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: const Text('Lihat Detail'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

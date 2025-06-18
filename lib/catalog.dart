@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
         hintColor: Colors.grey.shade400,
-        fontFamily: 'Roboto', // Anda mungkin perlu menyesuaikan font
+        fontFamily: 'Roboto', 
       ),
       home: CatalogPage(),
     );
@@ -27,13 +27,12 @@ class CatalogPage extends StatefulWidget {
 class _CatalogPageState extends State<CatalogPage> {
   TextEditingController _searchController = TextEditingController();
   List<Map<String, dynamic>> _products =
-      []; // Daftar untuk menyimpan data produk
+      []; 
 
-  // Contoh data produk (ganti dengan data sebenarnya dari API atau sumber data Anda)
   final List<Map<String, dynamic>> _dummyProducts = [
     {
       'image':
-          'assets/images/bryce_lowcut.png', // Ganti dengan path gambar produk
+          'assets/images/bryce_lowcut.png', 
       'name': 'BRY LOWCUT',
       'description': 'Alas Kaki - Sepatu',
       'price': 'Rp. 520.000',
@@ -57,22 +56,19 @@ class _CatalogPageState extends State<CatalogPage> {
       'description': 'Alas Kaki - Sepatu',
       'price': 'Rp. 520.000',
     },
-    // Tambahkan lebih banyak data produk dummy di sini
   ];
 
-  String? _selectedFilter; // Untuk menyimpan filter yang dipilih
+  String? _selectedFilter; 
 
   @override
   void initState() {
     super.initState();
-    _products = _dummyProducts; // Inisialisasi daftar produk
+    _products = _dummyProducts; 
   }
 
   void _applyFilter(String? filter) {
     setState(() {
       _selectedFilter = filter;
-      // Implementasikan logika pemfilteran produk berdasarkan _selectedFilter di sini
-      // Contoh sederhana (Anda perlu menyesuaikannya):
       if (filter == 'Pria') {
         _products =
             _dummyProducts.where((p) => p['name'].contains('MEN')).toList();
@@ -100,7 +96,7 @@ class _CatalogPageState extends State<CatalogPage> {
       appBar: AppBar(
         backgroundColor: Colors.orange,
         title: Image.asset(
-          'assets/images/eiger_logo_white.png', // Ganti dengan path logo Eiger putih Anda
+          'assets/images/eiger_logo_white.png', 
           height: 30,
         ),
         centerTitle: true,
@@ -108,7 +104,6 @@ class _CatalogPageState extends State<CatalogPage> {
           IconButton(
             icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
             onPressed: () {
-              // Tambahkan logika keranjang belanja
             },
           ),
         ],
@@ -122,7 +117,6 @@ class _CatalogPageState extends State<CatalogPage> {
                   children: [
                     OutlinedButton.icon(
                       onPressed: () {
-                        // Tambahkan logika filter
                         showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
@@ -143,7 +137,6 @@ class _CatalogPageState extends State<CatalogPage> {
                                     Navigator.pop(context);
                                   },
                                 ),
-                                // Tambahkan opsi filter lainnya di sini
                               ],
                             );
                           },
@@ -295,7 +288,7 @@ class _CatalogPageState extends State<CatalogPage> {
         selectedItemColor: Colors.orange,
         unselectedItemColor: Colors.grey,
         currentIndex:
-            0, // Menandai item "Home" sebagai aktif (sesuaikan jika ini bukan halaman utama)
+            0, 
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),

@@ -1,15 +1,12 @@
-// lib/models/cart_model.dart
 import 'package:flutter/foundation.dart';
-import 'product.dart'; // Pastikan ini mengimpor model Product Anda
+import 'product.dart'; 
 
-// Definisi untuk satu item dalam keranjang belanja
 class CartItem {
   final Product product;
   int quantity;
 
   CartItem({required this.product, this.quantity = 1});
 
-  // Metode untuk menambah atau mengurangi kuantitas
   void incrementQuantity() {
     quantity++;
   }
@@ -21,17 +18,15 @@ class CartItem {
   }
 }
 
-// Model untuk mengelola seluruh keranjang belanja
 class CartModel extends ChangeNotifier {
   final List<CartItem> _items = [];
 
   List<CartItem> get items => _items;
 
   void add(Product product) {
-    // Cek apakah produk sudah ada di keranjang
     bool found = false;
     for (var item in _items) {
-      if (item.product.name == product.name) { // Asumsi name adalah unique identifier
+      if (item.product.name == product.name) { 
         item.incrementQuantity();
         found = true;
         break;
@@ -43,9 +38,8 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Metode remove sekarang menerima Product, bukan CartItem
   void remove(Product product) {
-    final index = _items.indexWhere((item) => item.product.name == product.name); // Sesuaikan dengan cara Anda mengidentifikasi produk
+    final index = _items.indexWhere((item) => item.product.name == product.name); 
     if (index != -1) {
       if (_items[index].quantity > 1) {
         _items[index].quantity--;
@@ -61,9 +55,8 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Metode removeAll sekarang menerima Product, bukan CartItem
   void removeAll(Product product) {
-    _items.removeWhere((item) => item.product.name == product.name); // Sesuaikan dengan cara Anda mengidentifikasi produk
+    _items.removeWhere((item) => item.product.name == product.name); 
     notifyListeners();
   }
 

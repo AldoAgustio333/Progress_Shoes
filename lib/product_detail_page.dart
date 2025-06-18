@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'halaman_toko.dart';
 import 'halaman_chat_toko.dart';
-import 'package:provider/provider.dart'; // Dipertahankan dari HEAD
-import '../models/product.dart'; // Dipertahankan dari HEAD
-import '../models/cart_model.dart'; // Dipertahankan dari HEAD
-import 'CartPage.dart'; // Dipertahankan dari HEAD
+import 'package:provider/provider.dart'; 
+import '../models/product.dart'; 
+import '../models/cart_model.dart'; 
+import 'CartPage.dart'; 
 
 
 class ProductDetailPage extends StatefulWidget {
-  // Menggunakan model Product untuk tipe yang lebih kuat dan aman
+  
   final Product product;
 
   const ProductDetailPage({super.key, required this.product});
@@ -24,7 +24,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   void initState() {
     super.initState();
-    // Mengakses properti dari objek product
     selectedImage = widget.product.image;
     previewImages = [
       widget.product.image,
@@ -55,7 +54,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const CartPage()), // Dipertahankan dari HEAD
+                MaterialPageRoute(builder: (context) => const CartPage()), 
               );
             },
           ),
@@ -66,7 +65,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Gambar utama
+
             SizedBox(
               width: double.infinity,
               height: 300,
@@ -78,7 +77,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const SizedBox(height: 16),
 
-            // Preview thumbnail
             SizedBox(
               height: 60,
               child: ListView.builder(
@@ -118,14 +116,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const SizedBox(height: 16),
 
-            // Nama produk dan harga
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Text(
-                    widget.product.name, // Menggunakan widget.product.name
+                    widget.product.name, 
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -137,7 +134,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    // Menggunakan widget.product.price.toString() untuk konsistensi
                     'Rp${widget.product.price}',
                     style: const TextStyle(
                       color: Colors.white,
@@ -151,11 +147,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const SizedBox(height: 16),
 
-            // Deskripsi pendek (3 kata)
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                widget.product.desc // Menggunakan widget.product.desc
+                widget.product.desc 
                     .split(' ')
                     .take(3)
                     .join(' ') + '...',
@@ -166,7 +161,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const SizedBox(height: 16),
 
-            // Nama toko + icon
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -192,7 +186,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const SizedBox(height: 16),
 
-            // Section Deskripsi Produk
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -230,7 +223,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const SizedBox(height: 16),
 
-            // Section Informasi Toko dan Chat Toko
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -241,7 +233,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Kolom pertama: Informasi Toko
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -264,7 +256,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ],
                   ),
 
-                  // Kolom kedua: Chat Toko
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -293,7 +284,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const SizedBox(height: 16),
 
-            // Detail Produk
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -326,7 +316,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
             const Divider(height: 16, thickness: 1),
 
-            // Detail Sepatu
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -354,7 +343,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Harga'),
-                      Text('Rp${widget.product.price}'), // Menggunakan widget.product.price
+                      Text('Rp${widget.product.price}'), 
                     ],
                   ),
                 ],
@@ -363,7 +352,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const Divider(height: 16, thickness: 1),
 
-            // Pengiriman
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -390,7 +378,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const Divider(height: 16, thickness: 1),
 
-            // Rating
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -401,7 +388,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Kolom kiri: angka dan bintang besar
+                  
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: const [
@@ -428,7 +415,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
                   const SizedBox(width: 24),
 
-                  // Kolom kanan: distribusi rating
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -450,7 +436,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
 
             const SizedBox(height: 16),
-            // Section Profil Pengguna
+            
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -459,10 +445,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
               child: Row(
                 children: [
-                  // Kolom 1: Foto Profil
+                  
                   ClipOval(
                     child: Image.asset(
-                      'assets/images/profile.png', // Ganti dengan gambar profil pengguna
+                      'assets/images/profile.png', 
                       width: 60,
                       height: 60,
                       fit: BoxFit.cover,
@@ -470,12 +456,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                   const SizedBox(width: 16),
 
-                  // Kolom 2: Nama dan Rating Pengguna
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Nama Pengguna', // Ganti dengan nama pengguna
+                        'Nama Pengguna', 
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -497,8 +482,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
             ),
 
-
-            // Section Foto Produk dari User (PAP)
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -507,18 +490,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
               child: Row(
                 children: [
-                  // Gambar Produk 1
+                  
                   Expanded(
                     child: Image.asset(
-                      'assets/images/sepatu_back.png', // Ganti dengan gambar produk 1
+                      'assets/images/sepatu_back.png', 
                       fit: BoxFit.cover,
                     ),
                   ),
                   const SizedBox(width: 16),
-                  // Gambar Produk 2
+                  
                   Expanded(
                     child: Image.asset(
-                      'assets/images/product2.png', // Ganti dengan gambar produk 2
+                      'assets/images/product2.png', 
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -528,7 +511,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const SizedBox(height: 16),
 
-            // Section Review Pengguna
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -545,7 +527,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             const SizedBox(height: 24),
 
-            // Section: Tombol Beli Sekarang
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               decoration: BoxDecoration(
@@ -555,7 +536,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Kolom kiri - Harga Total
+                  
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -568,7 +549,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Rp${widget.product.price}', // Menggunakan widget.product.price
+                        'Rp${widget.product.price}', 
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -578,10 +559,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ],
                   ),
 
-                  // Kolom kanan - Tombol Beli & Cart
                   Row(
                     children: [
-                      // Tombol Beli Sekarang
+                      
                       ElevatedButton(
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -601,7 +581,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      // Icon Cart
+                      
                       Container(
                         decoration: const BoxDecoration(
                           color: Colors.white,
@@ -610,7 +590,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         child: IconButton(
                           icon: const Icon(Icons.shopping_cart, color: Colors.orange),
                           onPressed: () {
-                            Provider.of<CartModel>(context, listen: false).add(widget.product); // Dipertahankan dari HEAD
+                            Provider.of<CartModel>(context, listen: false).add(widget.product); 
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Berhasil di tambahkan')),
                             );

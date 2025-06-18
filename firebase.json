@@ -1,1 +1,39 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"toko-sepatu-eiger-5ab03","appId":"1:875874761809:android:6aff670eebefd2439a8c70","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"toko-sepatu-eiger-5ab03","configurations":{"android":"1:875874761809:android:6aff670eebefd2439a8c70","ios":"1:875874761809:ios:974bd33c8065672c9a8c70","macos":"1:875874761809:ios:974bd33c8065672c9a8c70","web":"1:875874761809:web:442c443ec7b056379a8c70","windows":"1:875874761809:web:0bde7392fc5eb79d9a8c70"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "toko-sepatu-eiger-5ab03",
+          "appId": "1:875874761809:android:6aff670eebefd2439a8c70",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "toko-sepatu-eiger-5ab03",
+          "configurations": {
+            "android": "1:875874761809:android:6aff670eebefd2439a8c70",
+            "ios": "1:875874761809:ios:974bd33c8065672c9a8c70",
+            "macos": "1:875874761809:ios:974bd33c8065672c9a8c70",
+            "web": "1:875874761809:web:442c443ec7b056379a8c70",
+            "windows": "1:875874761809:web:0bde7392fc5eb79d9a8c70"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

@@ -16,20 +16,18 @@ class HalamanToko extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView( // Menggunakan SingleChildScrollView untuk memungkinkan scrolling
-
+      body: SingleChildScrollView( 
         child: Column(
           children: [
-            // Banner Gambar
+
             Image.asset(
-              'assets/images/toko.png', // Menggunakan gambar dari assets/images
+              'assets/images/toko.png', 
               width: double.infinity,
               height: 200,
               fit: BoxFit.cover,
             ),
             const SizedBox(height: 16),
 
-            // Nama Toko
             const Text(
               'EIGER Store',
               style: TextStyle(
@@ -39,23 +37,17 @@ class HalamanToko extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Kolom pertama (Gambar di kiri, Teks di kanan)
-
             Row(
-
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
               children: [
-                // Gambar Kiri
                 Image.asset(
-                  'assets/images/toko.png', // Menggunakan gambar dari assets/images
+                  'assets/images/toko.png', 
                   width: 120,
                   height: 200,
                   fit: BoxFit.cover,
                 ),
-                // Teks Kanan
-                const Expanded(
 
+                const Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
@@ -68,12 +60,9 @@ class HalamanToko extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-
-            // Kolom kedua (Teks di kiri, Gambar di kanan)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Teks Kiri
                 const Expanded(
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
@@ -84,9 +73,9 @@ class HalamanToko extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Gambar Kanan
+
                 Image.asset(
-                  'assets/images/toko.png', // Menggunakan gambar dari assets/images
+                  'assets/images/toko.png', 
                   width: 120,
                   height: 200,
                   fit: BoxFit.cover,
@@ -95,7 +84,6 @@ class HalamanToko extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Konten lainnya bisa ditambahkan di sini
           ],
         ),
       ),

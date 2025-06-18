@@ -1,9 +1,7 @@
-// lib/checkout_page.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/cart_model.dart'; // Mengimpor CartModel (yang berisi CartItem)
-import '../models/history_model.dart'; // Mengimpor HistoryModel
-import '../models/product.dart'; // Mengimpor Product
+import '../models/cart_model.dart';
+import '../models/history_model.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
@@ -13,314 +11,183 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
-  // Pilihan metode pembayaran
-  String selectedPaymentMethod = 'Transfer Bank';
-
-  // Contoh metode pengiriman default
-  String shippingMethod = 'JNE Regular';
-  String shippingDateRange = '18-20 Mar';
-
-  // Contoh biaya admin bank (ubah ke double)
-  double adminBankFee = 5000.0; // Mengubah int menjadi double
-
-  // Mengubah semua variabel harga menjadi double
-  double subtotalProduk = 0.0;
-  double shippingCost = 0.0; // Mengubah int menjadi double
-  double totalHarga = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-    _hitungTotal();
-  }
-
-  void _hitungTotal() {
-    final cart = Provider.of<CartModel>(context, listen: false);
-    double tempSubtotal = 0.0;
-    for (var item in cart.items) { // PERUBAHAN: Gunakan cart.items
-      tempSubtotal += item.product.price * item.quantity; // Menghapus int.parse()
-    }
-    setState(() {
-      subtotalProduk = tempSubtotal;
-      totalHarga = subtotalProduk + shippingCost + adminBankFee;
-    });
-  }
+  String _alamatTujuan = 'Jl. Merdeka No. 123, Bandung, Jawa Barat';
+  String _metodePengiriman = 'JNE Regular';
+  String _estimasiTiba = '18-20 Mar';
+  double _biayaPengiriman = 15000.0;
+  String _metodePembayaran = 'Transfer Bank';
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<CartModel>(context); // Ambil instance CartModel
-    final history = Provider.of<HistoryModel>(context, listen: false); // Akses HistoryModel
+    final cart = Provider.of<CartModel>(context);
+    final history = Provider.of<HistoryModel>(context, listen: false);
 
-    final alamat = 'Jl. Merdeka No. 123, Bandung, Jawa Barat'; // Contoh alamat
-
-    // Daftar metode pembayaran
-    final paymentMethods = [
-      'Transfer Bank',
-      'COD',
-      'Sea Bank',
-      'Dana',
-      'Ovo',
-    ];
+    final double subtotalProduk = cart.totalPrice;
+    final double adminBank = 5000.0;
+    final double totalPembayaran = subtotalProduk + _biayaPengiriman + adminBank;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
         centerTitle: true,
         title: const Text(
-          'EIGER',
+          'Checkout',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 20,
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Section alamat tujuan
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.orange[50],
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.orange),
-              ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Baris Alamat + Tombol Ubah
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Alamat Tujuan',
-                        style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // TODO: aksi ubah alamat
-                        },
-                        child: const Text(
-                          'Ubah',
-                          style: TextStyle(color: Colors.orange),
-                        ),
-                      ),
-                    ],
+                  _buildSectionCard(
+                    title: 'Alamat Tujuan',
+                    onUbahPressed: () async {
+                      final newAddress = await _showAddressInputDialog(context, _alamatTujuan);
+                      if (newAddress != null && newAddress.isNotEmpty) {
+                        setState(() {
+                          _alamatTujuan = newAddress;
+                        });
+                      }
+                    },
+                    child: Text(_alamatTujuan, style: const TextStyle(fontSize: 14)),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    alamat,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-            ),
+                  const SizedBox(height: 16),
 
-            const SizedBox(height: 16),
-
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Ringkasan Pesanan',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            // List produk dengan metode pembayaran ditempel ke card produk
-            Expanded(
-              child: ListView.builder(
-                itemCount: cart.items.length + 1, // PERUBAHAN: Gunakan cart.items
-                itemBuilder: (context, index) {
-                  if (index < cart.items.length) { // PERUBAHAN: Gunakan cart.items
-                    final cartItem = cart.items[index]; // PERUBAHAN: Gunakan cart.items
-                    final product = cartItem.product;
-
-                    return Column(
-                      children: [
-                        Card(
-                          elevation: 2,
-                          child: ListTile(
-                            leading: Image.asset(product.image, width: 50),
-                            title: Text(product.name),
-                            subtitle: Text('Jumlah: ${cartItem.quantity}'),
-                            trailing: Text(
-                              'Rp ${(product.price * cartItem.quantity).toStringAsFixed(0)}', // Menghapus int.parse()
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                  const Text('Ringkasan Pesanan', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: cart.items.length,
+                    itemBuilder: (context, index) {
+                      final item = cart.items[index];
+                      return Card(
+                        elevation: 1,
+                        margin: const EdgeInsets.only(bottom: 8),
+                        child: ListTile(
+                          leading: Image.asset(item.product.image, width: 50),
+                          title: Text(item.product.name),
+                          subtitle: Text('Jumlah: ${item.quantity}'),
+                          trailing: Text(
+                            'Rp${(item.product.price * item.quantity).toStringAsFixed(0)}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                        const Divider(height: 1),
-                      ],
-                    );
-                  } else {
-                    // Section metode pembayaran setelah list produk
-                    return Column(
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+
+                  _buildSectionCard(
+                    title: 'Metode Pengiriman',
+                    onUbahPressed: () async {
+                      final result = await _showShippingOptionsDialog(context, _metodePengiriman);
+                      if (result != null) {
+                        setState(() {
+                          _metodePengiriman = result['name'];
+                          _estimasiTiba = result['eta'];
+                          _biayaPengiriman = result['cost'];
+                        });
+                      }
+                    },
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 8),
-                        const Text(
-                          'Metode Pembayaran',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: paymentMethods.map((method) {
-                            final isSelected = selectedPaymentMethod == method;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedPaymentMethod = method;
-                                  // Perbarui total pembayaran jika biaya admin berbeda per metode
-                                  // Contoh: adminBankFee = (method == 'Transfer Bank' ? 5000.0 : 0.0);
-                                  _hitungTotal();
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? Colors.orange
-                                      : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.orange),
-                                ),
-                                child: Text(
-                                  method,
-                                  style: TextStyle(
-                                    color:
-                                    isSelected ? Colors.white : Colors.orange,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        const SizedBox(height: 20),
+                        Text(_metodePengiriman, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                        Text('Estimasi tiba: $_estimasiTiba', style: const TextStyle(fontSize: 12, color: Colors.grey)),
                       ],
-                    );
-                  }
-                },
-              ),
-            ),
-
-            const Divider(),
-
-            // Section Metode Pengiriman
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-              decoration: BoxDecoration(
-                color: Colors.orange[50],
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.orange),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Metode Pengiriman',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        shippingMethod,
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // TODO: aksi ubah metode pengiriman
-                        },
-                        child: const Text(
-                          'Ubah',
-                          style: TextStyle(color: Colors.orange),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Garansi Tiba : $shippingDateRange',
-                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
                   ),
                 ],
               ),
             ),
+          ),
 
-            const SizedBox(height: 20),
-
-            // Section Total Pembayaran di bawah layar
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: Colors.orange[50],
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.orange),
-              ),
-              child: Column(
-                children: [
-                  _buildPriceRow('Subtotal untuk produk', subtotalProduk),
-                  _buildPriceRow('Subtotal Pengiriman', shippingCost),
-                  _buildPriceRow('Admin Bank', adminBankFee),
-                  const Divider(),
-                  _buildPriceRow(
-                    'Total Pembayaran',
-                    totalHarga,
-                    isTotal: true,
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  if (cart.items.isNotEmpty) {
-                    history.addOrder(cart.items); // simpan semua item pembelian ke history
-                    cart.clearCart(); // kosongkan cart setelah beli
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Pembayaran dikonfirmasi!')),
-                    );
-
-                    // Pindah ke halaman riwayat
-                    Navigator.pushNamed(context, '/riwayat');
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Keranjang Anda kosong, tidak dapat checkout.')),
-                    );
-                  }
-                },
-                icon: const Icon(Icons.payment),
-                label: const Text('Konfirmasi Pembayaran'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  textStyle: const TextStyle(fontSize: 16),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(0, -3),
                 ),
-              ),
+              ],
             ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildPriceRow('Subtotal Produk', subtotalProduk),
+                _buildPriceRow('Biaya Pengiriman', _biayaPengiriman),
+                _buildPriceRow('Biaya Admin', adminBank),
+                const Divider(height: 20),
+                _buildPriceRow('Total Pembayaran', totalPembayaran, isTotal: true),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: cart.items.isEmpty ? null : () {
+                      history.addOrder(cart.items);
+                      cart.clearCart();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Pesanan berhasil dibuat!')),
+                      );
+
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    child: const Text('Bayar Sekarang'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionCard({required String title, required Widget child, required VoidCallback onUbahPressed}) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                TextButton(
+                  onPressed: onUbahPressed,
+                  child: const Text('Ubah', style: TextStyle(color: Colors.orange)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            child,
           ],
         ),
       ),
     );
   }
 
-  // Mengubah _buildPriceRow agar menerima double untuk amount
   Widget _buildPriceRow(String label, double amount, {bool isTotal = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -330,20 +197,90 @@ class _CheckoutPageState extends State<CheckoutPage> {
           Text(
             label,
             style: TextStyle(
-              fontSize: isTotal ? 18 : 16,
+              fontSize: isTotal ? 16 : 14,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
             ),
           ),
           Text(
-            'Rp ${amount.toStringAsFixed(0)}', // Format sebagai string tanpa desimal
+            'Rp ${amount.toStringAsFixed(0)}',
             style: TextStyle(
-              fontSize: isTotal ? 18 : 16,
+              fontSize: isTotal ? 16 : 14,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              color: isTotal ? Colors.orange : Colors.black,
+              color: isTotal ? Colors.orange : Colors.black87,
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Future<String?> _showAddressInputDialog(BuildContext context, String currentAddress) {
+    TextEditingController addressController = TextEditingController(text: currentAddress);
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Ubah Alamat'),
+          content: TextField(
+            controller: addressController,
+            maxLines: 3,
+            decoration: const InputDecoration(
+              hintText: 'Masukkan alamat lengkap',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Batal'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            ElevatedButton(
+              child: const Text('Simpan'),
+              onPressed: () => Navigator.of(context).pop(addressController.text),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<Map<String, dynamic>?> _showShippingOptionsDialog(BuildContext context, String currentMethod) {
+    final options = [
+      {'name': 'JNE Regular', 'eta': '18-20 Mar', 'cost': 15000.0},
+      {'name': 'SiCepat Halu', 'eta': '19-21 Mar', 'cost': 12000.0},
+      {'name': 'J&T Express', 'eta': '17-19 Mar', 'cost': 18000.0},
+    ];
+
+    return showDialog<Map<String, dynamic>>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Pilih Metode Pengiriman'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: options.length,
+              itemBuilder: (context, index) {
+                final option = options[index];
+                return ListTile(
+                  title: Text(option['name'] as String),
+                  subtitle: Text('Rp${(option['cost'] as double).toStringAsFixed(0)}'),
+                  onTap: () {
+                    Navigator.of(context).pop(option);
+                  },
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Batal'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
     );
   }
 }

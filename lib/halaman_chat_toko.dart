@@ -42,7 +42,6 @@ class HalamanChatToko extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Area chat abu-abu
             Container(
               height: 200,
               padding: const EdgeInsets.all(12),
@@ -74,7 +73,6 @@ class HalamanChatToko extends StatelessWidget {
             ),
             const SizedBox(height: 8),
 
-            // Input chat + tombol submit
             Row(
               children: [
                 Expanded(
@@ -90,10 +88,8 @@ class HalamanChatToko extends StatelessWidget {
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () {
-                    // Aksi saat tombol diklik, bisa disesuaikan
                     String pesan = _chatController.text;
                     if (pesan.isNotEmpty) {
-                      // Untuk sekarang, tampilkan snackbar sebagai dummy
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Pesan terkirim: $pesan')),
                       );

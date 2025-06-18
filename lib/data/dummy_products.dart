@@ -1,10 +1,9 @@
-// lib/data/dummy_products.dart
 import '../models/product.dart';
 
 final List<Product> products = [
   Product(
     name: 'Tas Eiger 1',
-    price: 500000.0, // Diubah menjadi double
+    price: 500000.0, 
     desc: 'Tas kuat untuk hiking',
     image: 'assets/images/sepatu_atas.png',
     imageSide: 'assets/images/sepatu_side.png',
@@ -14,7 +13,7 @@ final List<Product> products = [
   ),
   Product(
     name: 'Sepatu Nike Air',
-    price: 1500000.0, // Diubah menjadi double
+    price: 1500000.0, 
     desc: 'Sepatu nyaman untuk olahraga',
     image: 'assets/images/sepatu_back.png',
     imageSide: 'assets/images/sepatu_side.png',
@@ -26,7 +25,7 @@ final List<Product> products = [
     image: 'assets/images/product1.png',
     name: 'Sepatu Gunung',
     desc: 'Tahan air',
-    price: 499000.0, // Diubah menjadi double
+    price: 499000.0, 
     imageSide: 'assets/images/sepatu_side.png',
     imageBack: 'assets/images/sepatu_back.png',
     imageTop: 'assets/images/sepatu_atas.png',
@@ -36,7 +35,7 @@ final List<Product> products = [
     image: 'assets/images/product2.png',
     name: 'Sepatu Hiking',
     desc: 'Anti licin',
-    price: 579000.0, // Diubah menjadi double
+    price: 579000.0, 
     imageSide: 'assets/images/sepatu_side.png',
     imageBack: 'assets/images/sepatu_back.png',
     imageTop: 'assets/images/sepatu_atas.png',
@@ -46,7 +45,7 @@ final List<Product> products = [
     image: 'assets/images/product3.png',
     name: 'Boots Eiger',
     desc: 'Outdoor keren',
-    price: 629000.0, // Diubah menjadi double
+    price: 629000.0, 
     imageSide: 'assets/images/sepatu_side.png',
     imageBack: 'assets/images/sepatu_back.png',
     imageTop: 'assets/images/sepatu_atas.png',
@@ -56,7 +55,7 @@ final List<Product> products = [
     image: 'assets/images/product4.png',
     name: 'Trail Runner',
     desc: 'Nyaman dipakai',
-    price: 459000.0, // Diubah menjadi double
+    price: 459000.0, 
     imageSide: 'assets/images/sepatu_side.png',
     imageBack: 'assets/images/sepatu_back.png',
     imageTop: 'assets/images/sepatu_atas.png',
@@ -66,7 +65,7 @@ final List<Product> products = [
     image: 'assets/images/product5.png',
     name: 'Sneaker Eiger',
     desc: 'Kasual stylish',
-    price: 399000.0, // Diubah menjadi double
+    price: 399000.0, 
     imageSide: 'assets/images/sepatu_side.png',
     imageBack: 'assets/images/sepatu_back.png',
     imageTop: 'assets/images/sepatu_atas.png',
@@ -76,7 +75,7 @@ final List<Product> products = [
     image: 'assets/images/product1.png',
     name: 'Sepatu Tactical',
     desc: 'Kuat & awet',
-    price: 549000.0, // Diubah menjadi double
+    price: 549000.0, 
     imageSide: 'assets/images/sepatu_side.png',
     imageBack: 'assets/images/sepatu_back.png',
     imageTop: 'assets/images/sepatu_atas.png',

@@ -1,4 +1,3 @@
-// order_detail_page.dart
 import 'package:flutter/material.dart';
 
 class OrderDetailPage extends StatefulWidget {
@@ -7,7 +6,7 @@ class OrderDetailPage extends StatefulWidget {
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
-  // Contoh data detail pesanan (ganti dengan data sebenarnya dari API atau state aplikasi Anda)
+  
   Map<String, dynamic>? _orderDetail;
   TextEditingController _reviewController = TextEditingController();
 
@@ -17,12 +16,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     _orderDetail =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     if (_orderDetail == null) {
-      // Set data dummy jika tidak ada argumen yang diterima
+
       _orderDetail = {
         'orderNumber': '2502266VJ4USX5',
         'orderDate': '16 Maret 2025',
         'productImage':
-            'assets/images/bryce_lowcut.png', // Ganti dengan path gambar produk
+            'assets/images/bryce_lowcut.png', 
         'productName': 'BRYCE LOWCUT',
         'stock': 1,
         'color': 'TAN',
@@ -52,7 +51,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         ),
         title: Center(
           child: Image.asset(
-            'assets/images/eiger_logo_white.png', // Ganti dengan path logo Eiger putih Anda
+            'assets/images/eiger_logo_white.png', 
             height: 30,
           ),
         ),
@@ -95,7 +94,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                     SizedBox(height: 16),
 
-                    // Detail Produk
                     Row(
                       children: <Widget>[
                         Image.asset(
@@ -148,7 +146,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                     SizedBox(height: 16),
 
-                    // Harga
                     Text(
                       'Harga Barang',
                       style: TextStyle(
@@ -193,7 +190,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                     SizedBox(height: 24),
 
-                    // Status Pengiriman
                     Container(
                       padding: EdgeInsets.all(12.0),
                       decoration: BoxDecoration(
@@ -234,7 +230,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                     SizedBox(height: 24),
 
-                    // Alamat Tujuan
                     Text(
                       'Alamat Tujuan',
                       style: TextStyle(
@@ -249,12 +244,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                     SizedBox(height: 24),
 
-                    // Opsi Aksi
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Logika Beli Lagi
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.orange,
@@ -271,7 +264,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       width: double.infinity,
                       child: OutlinedButton(
                         onPressed: () {
-                          // Logika Batalkan (mungkin perlu kondisi berdasarkan status pesanan)
                         },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(color: Colors.grey.shade400),
@@ -290,7 +282,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       width: double.infinity,
                       child: OutlinedButton(
                         onPressed: () {
-                          // Logika Kembalikan Barang (mungkin perlu kondisi berdasarkan status pesanan dan periode waktu)
                         },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(color: Colors.orange),
@@ -306,7 +297,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                     SizedBox(height: 24),
 
-                    // Kirim Review Sekarang
                     Text(
                       'Kirim Review Sekarang',
                       style: TextStyle(
@@ -335,7 +325,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       child: Row(
                         children: [
                           Image.asset(
-                            'assets/images/eiger_logo_white.png', // Ganti dengan path gambar EAC
+                            'assets/images/eiger_logo_white.png', 
                             width: 40,
                             height: 40,
                           ),
@@ -357,11 +347,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Logika Kirim Review
                           String reviewText = _reviewController.text;
                           if (reviewText.isNotEmpty) {
                             print('Mengirim review: $reviewText');
-                            // Kirim review ke server atau update state
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
