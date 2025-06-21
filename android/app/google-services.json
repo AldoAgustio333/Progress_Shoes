@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "564607430418",
+    "project_id": "e-shoes-f6b2e",
+    "storage_bucket": "e-shoes-f6b2e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564607430418:android:0651b97e7f028b90658dcb",
+        "android_client_info": {
+          "package_name": "com.example.e_shoes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC60lpsDcgiY8ffoqIKE90eKbCMsDIDoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

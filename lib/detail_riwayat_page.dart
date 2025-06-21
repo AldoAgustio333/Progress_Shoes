@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
-import 'models/cart_model.dart'; // Pastikan ini mengandung CartItem dan Product
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'models/cart_model.dart';
+import 'product_detail_page.dart';
 
-class DetailRiwayatPage extends StatelessWidget {
+class DetailRiwayatPage extends StatefulWidget {
   final CartItem item;
 
   const DetailRiwayatPage({super.key, required this.item});
 
   @override
+  State<DetailRiwayatPage> createState() => _DetailRiwayatPageState();
+}
+
+class _DetailRiwayatPageState extends State<DetailRiwayatPage> {
+  final TextEditingController _reviewController = TextEditingController();
+
+  @override
+  void dispose() {
+    _reviewController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final product = item.product;
-    final int hargaBarang = int.parse(product.price) * item.quantity;
+    final product = widget.item.product;
+    final int hargaBarang = int.parse(product.price) * widget.item.quantity;
     final int hargaJasaKirim = 10000;
     final int total = hargaBarang + hargaJasaKirim;
 
@@ -27,7 +42,14 @@ class DetailRiwayatPage extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(product.image, width: 80, height: 80),
+                Image.network(
+                  product.image,
+                  width: 80,
+                  height: 80,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(Icons.broken_image, size: 80);
+                  },
+                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -37,7 +59,7 @@ class DetailRiwayatPage extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
-                      Text('Jumlah: ${item.quantity}'),
+                      Text('Jumlah: ${widget.item.quantity}'),
                     ],
                   ),
                 )
@@ -64,19 +86,35 @@ class DetailRiwayatPage extends StatelessWidget {
 
             // Tombol-tombol Aksi
             const SizedBox(height: 12),
-            buildActionButton(context, 'Beli Lagi', Colors.orange),
-            buildActionButton(context, 'Batalkan', Colors.grey),
-            buildActionButton(context, 'Kembalikan Barang', Colors.red),
+            buildActionButton(context, 'Beli Lagi', Colors.orange, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDetailPage(product: product),
+                ),
+              );
+            }),
+            buildActionButton(context, 'Batalkan', Colors.grey, () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Pesanan dibatalkan')),
+              );
+            }),
+            buildActionButton(context, 'Kembalikan Barang', Colors.red, () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Permintaan pengembalian dikirim')),
+              );
+            }),
 
             const SizedBox(height: 24),
 
-            // Kirim Review
+            // Form Kirim Review
             const Text('Kirim Review',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             TextField(
+              controller: _reviewController,
               maxLines: 4,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Tulis review kamu di sini...',
                 border: OutlineInputBorder(),
               ),
@@ -89,10 +127,32 @@ class DetailRiwayatPage extends StatelessWidget {
                   backgroundColor: Colors.orange,
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Review berhasil dikirim!')),
-                  );
+                onPressed: () async {
+                  final String reviewText = _reviewController.text.trim();
+                  if (reviewText.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Review tidak boleh kosong')),
+                    );
+                    return;
+                  }
+
+                  try {
+                    await FirebaseFirestore.instance.collection('reviews').add({
+                      'productName': product.name,
+                      'review': reviewText,
+                      'timestamp': Timestamp.now(),
+                    });
+
+                    _reviewController.clear();
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Review berhasil dikirim!')),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Gagal kirim review: $e')),
+                    );
+                  }
                 },
                 child: const Text('Kirim'),
               ),
@@ -122,20 +182,21 @@ class DetailRiwayatPage extends StatelessWidget {
     );
   }
 
-  Widget buildActionButton(BuildContext context, String label, Color color) {
+  Widget buildActionButton(
+      BuildContext context,
+      String label,
+      Color color,
+      VoidCallback onPressed,
+      ) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
-          foregroundColor: Colors.white, // Teks putih
+          foregroundColor: Colors.white,
         ),
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('$label diklik')),
-          );
-        },
+        onPressed: onPressed,
         child: Text(label),
       ),
     );

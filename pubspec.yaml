@@ -1,6 +1,5 @@
 name: e_shoes
 description: "A new Flutter project."
-<<<<<<< HEAD
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -17,16 +16,11 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-=======
-publish_to: 'none'
-
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
 version: 1.0.0+1
 
 environment:
   sdk: ^3.7.0
 
-<<<<<<< HEAD
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -37,21 +31,23 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^6.0.5
+  firebase_core: ^2.25.4
+  firebase_auth: ^4.16.4
+  flutter_easyloading: ^3.0.0
+  cloud_firestore: ^4.9.0
+  carousel_slider: ^5.1.1
+  firebase_messaging: ^14.7.2
+  flutter_local_notifications: ^17.0.0
+
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-=======
-dependencies:
-  flutter:
-    sdk: flutter
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-<<<<<<< HEAD
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -69,14 +65,11 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-=======
-  flutter_lints: ^5.0.0
-
-flutter:
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
   uses-material-design: true
   assets:
-    - assets/images/banner.png
+    - assets/images/banner1.png
+    - assets/images/banner2.png
+    - assets/images/banner3.png
     - assets/images/product1.png
     - assets/images/product2.png
     - assets/images/product3.png
@@ -87,14 +80,13 @@ flutter:
     - assets/images/popular3.png
     - assets/images/popular4.png
     - assets/images/popular5.png
-    - assets/images/banner2.png
-<<<<<<< HEAD
     - assets/images/sepatu_atas.png
     - assets/images/sepatu_side.png
     - assets/images/sepatu_bottom.png
     - assets/images/sepatu_back.png
     - assets/images/profile.png
     - assets/images/toko.png
+    - assets/images/eigers.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -106,11 +98,6 @@ flutter:
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
-=======
-    - assets/images/eiger_logo_full.png
-    - assets/images/eiger_logo_white.png
-    - assets/images/bryce_lowcut.png
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
@@ -118,7 +105,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-<<<<<<< HEAD
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
@@ -132,17 +118,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-=======
-  #   - family: Roboto
-  #     fonts:
-  #       - asset: fonts/Roboto-Regular.ttf
-  #       - asset: fonts/Roboto-Bold.ttf
-  #         weight: 700
-  #
-  fonts:
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/Roboto-Regular.ttf
-        - asset: assets/fonts/Roboto-Bold.ttf
-          weight: 700
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b

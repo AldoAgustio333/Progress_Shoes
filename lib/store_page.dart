@@ -1,20 +1,8 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import '../data/dummy_products.dart'; // Pastikan di sini sudah List<Product>
-import 'search_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'product_detail_page.dart';
-import 'main.dart';
-import 'package:provider/provider.dart';
-import '../models/product.dart';
-import '../models/cart_model.dart';
-
 import 'CartPage.dart';
-=======
-import '../data/dummy_products.dart';
-import 'search_page.dart';
-import 'product_detail_page.dart';
-import 'main.dart';
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
+import '../models/product.dart';
 
 class StorePage extends StatefulWidget {
   const StorePage({super.key});
@@ -26,29 +14,32 @@ class StorePage extends StatefulWidget {
 class _StorePageState extends State<StorePage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  List<Product> _products = [];
+  bool _isLoading = true;
 
-<<<<<<< HEAD
-  // Ubah ke List<Product>
+  @override
+  void initState() {
+    super.initState();
+    _fetchProductsFromFirestore();
+  }
+
+  Future<void> _fetchProductsFromFirestore() async {
+    final snapshot = await FirebaseFirestore.instance.collection('produk').get();
+    setState(() {
+      _products = snapshot.docs
+          .map((doc) => Product.fromFirestore(doc.data()))
+          .toList();
+      _isLoading = false;
+    });
+  }
+
   List<Product> get filteredProducts {
     return _searchQuery.isEmpty
-        ? products
-        : products.where((product) =>
+        ? _products
+        : _products.where((product) =>
         product.name.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
   }
 
-
-=======
-  // Filter produk berdasarkan input pencarian
-  List<Map<String, dynamic>> get filteredProducts {
-    return _searchQuery.isEmpty
-        ? products
-        : products
-        .where((product) =>
-        product['name'].toLowerCase().contains(_searchQuery.toLowerCase()))
-        .toList();
-  }
-
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,20 +61,17 @@ class _StorePageState extends State<StorePage> {
               color: Colors.white,
             ),
             onPressed: () {
-<<<<<<< HEAD
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const CartPage()),
-=======
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Cart diklik!')),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
               );
             },
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -92,7 +80,7 @@ class _StorePageState extends State<StorePage> {
               // Row Filter & Search
               Row(
                 children: [
-                  // Tombol Filter
+                  // Tombol Filter (Dummy)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
@@ -137,13 +125,7 @@ class _StorePageState extends State<StorePage> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.search, color: Colors.orange),
-<<<<<<< HEAD
                             onPressed: () {},
-=======
-                            onPressed: () {
-                              // Aksi pencarian sudah ditangani dengan onChanged pada TextField
-                            },
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                           )
                         ],
                       ),
@@ -153,110 +135,91 @@ class _StorePageState extends State<StorePage> {
               ),
               const SizedBox(height: 24),
 
-              // Menampilkan produk yang sudah difilter
+              // Menampilkan produk
               GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
-                childAspectRatio: 0.7,
+                childAspectRatio: 0.6, // <- Lebih tinggi
                 children: List.generate(filteredProducts.length, (index) {
                   final product = filteredProducts[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetailPage(product: product),
+                  return SizedBox(
+                    height: 500, // <-- atur tinggi sesuai kebutuhan
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetailPage(product: product),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                      );
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
+                        elevation: 4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Gambar
+                            ClipRRect(
                               borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(16),
                                 topRight: Radius.circular(16),
                               ),
-                              child: Image.asset(
-<<<<<<< HEAD
+                              child: Image.network(
                                 product.image,
-=======
-                                product['image'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
-                                height: 120,
+                                height: 200,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-<<<<<<< HEAD
-                                  product.name,
-=======
-                                  product['name'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                            // Konten
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    product.name,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-<<<<<<< HEAD
-                                  product.desc,
-=======
-                                  product['desc'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    product.desc,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                SizedBox(
-                                  width: 100,
-                                  child: DecoratedBox(
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                                     decoration: BoxDecoration(
                                       color: Colors.orange,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 6, horizontal: 8),
-                                      child: Text(
-<<<<<<< HEAD
-                                        product.price.toString(),
-=======
-                                        product['price'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        textAlign: TextAlign.left,
+                                    child: Text(
+                                      'Rp ${product.price}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -266,74 +229,6 @@ class _StorePageState extends State<StorePage> {
           ),
         ),
       ),
-<<<<<<< HEAD
-
-=======
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 0) {
-            // Pindah ke halaman utama (HomePage)
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const MyApp()),
-            );
-          } else if (index == 1) {
-            // Pindah ke halaman SearchPage
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SearchPage()),
-            );
-          } else if (index == 2) {
-            // Pindah ke halaman StorePage
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const StorePage()),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Tab ke-$index ditekan')),
-            );
-          }
-        },
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: Colors.orange,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.store,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),
-            label: '',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'Riwayat',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-      ),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
     );
   }
 }

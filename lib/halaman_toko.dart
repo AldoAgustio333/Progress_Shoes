@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HalamanToko extends StatelessWidget {
+  const HalamanToko({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +60,7 @@ class HalamanToko extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      'Temukan berbagai produk outdoor berkualitas di EIGER. Kami menyediakan perlengkapan hiking, camping, dan banyak lagi.',
+                      'Where Outdoor Passion Meets Experiential Customer Satisfaction Where Outdoor Passion Meets Experiential Customer Satisfaction Take a look inside PT Eigerindo MPI and revel in the fun of exploring. Uniting our passionfor outdoor adventure and commitment to provide ',
                       style: TextStyle(fontSize: 16),
                       textAlign: TextAlign.left,
                     ),
@@ -78,7 +79,7 @@ class HalamanToko extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      'Jelajahi koleksi kami untuk mendapatkan perlengkapan outdoor yang tepat untuk petualangan Anda. Semua produk kami dirancang untuk kenyamanan dan ketahanan.',
+                      'Where Outdoor Passion Meets Experiential Customer Satisfaction Where Outdoor Passion Meets Experiential Customer Satisfaction Take a look inside PT Eigerindo MPI and revel in the fun of exploring. Uniting our passionfor outdoor adventure and commitment to provide ',
                       style: TextStyle(fontSize: 16),
                       textAlign: TextAlign.left,
                     ),

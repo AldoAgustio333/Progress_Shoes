@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'store_page.dart';
+import 'halaman_toko.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -62,12 +63,20 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         backgroundColor: Colors.orange,
         centerTitle: true,
-        title: const Text(
-          'EIGER',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HalamanToko()),
+            );
+          },
+          child: const Text(
+            'EIGER',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
           ),
         ),
         bottom: PreferredSize(
@@ -169,67 +178,7 @@ class _SearchPageState extends State<SearchPage> {
             );
           },
         ),
-<<<<<<< HEAD
       ),
     );
   }
-=======
-
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1, // Karena ini halaman Search
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pop(context); // Balik ke Home
-          } else if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const StorePage()),
-            );
-          }
-        },
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: Colors.orange,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.store,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),
-            label: '',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'Riwayat',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-      ),
-
-
-    );
-
-  }
-
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
 }

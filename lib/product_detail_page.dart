@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'halaman_toko.dart';
 import 'halaman_chat_toko.dart';
-<<<<<<< HEAD
 import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../models/cart_model.dart';
@@ -13,12 +12,6 @@ class ProductDetailPage extends StatefulWidget {
 
   final Product product;
 
-=======
-
-
-class ProductDetailPage extends StatefulWidget {
-  final Map<String, dynamic> product;
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
 
   const ProductDetailPage({super.key, required this.product});
 
@@ -33,7 +26,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   void initState() {
     super.initState();
-<<<<<<< HEAD
     selectedImage = widget.product.image;
     previewImages = [
       widget.product.image,
@@ -41,17 +33,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       widget.product.imageBack,
       widget.product.imageTop,
       widget.product.imageBottom,
-=======
-
-    selectedImage = widget.product['image'] ?? 'assets/images/product2.png';
-
-    previewImages = [
-      widget.product['image'] ?? 'assets/images/product2.png',
-      widget.product['image_side'] ?? 'assets/images/sepatu_side.png',
-      widget.product['image_back'] ?? 'assets/images/sepatu_back.png',
-      widget.product['image_top'] ?? 'assets/images/sepatu_atas.png',
-      widget.product['image_bottom'] ?? 'assets/images/sepatu_bottom.png',
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
     ];
   }
 
@@ -73,14 +54,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           IconButton(
             icon: const Icon(Icons.shopping_cart, color: Colors.white),
             onPressed: () {
-<<<<<<< HEAD
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const CartPage()),
-=======
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Cart diklik!')),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
               );
             },
           ),
@@ -95,9 +71,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             SizedBox(
               width: double.infinity,
               height: 300,
-              child: Image.asset(
+              child: Image.network(
                 selectedImage,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Center(child: Text('Gagal memuat gambar'));
+                },
               ),
             ),
 
@@ -130,9 +109,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
+                        child: Image.network(
                           previewImages[index],
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.broken_image);
+                          },
                         ),
                       ),
                     ),
@@ -150,16 +132,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               children: [
                 Expanded(
                   child: Text(
-<<<<<<< HEAD
                     widget.product.name,
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
 
-=======
-                    widget.product['name'],
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                 ),
                 const SizedBox(width: 16),
                 Container(
@@ -169,24 +145,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-<<<<<<< HEAD
                     widget.product.price.toString(),
-=======
-                    widget.product['price'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-<<<<<<< HEAD
 
                 ),
 
-=======
-                ),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
               ],
             ),
 
@@ -196,7 +164,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-<<<<<<< HEAD
                 widget.product.desc
                     .split(' ')
                     .take(3)
@@ -205,17 +172,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 style: const TextStyle(fontSize: 16, color: Colors.grey),
               ),
 
-=======
-                widget.product['desc']
-                    ?.toString()
-                    .split(' ')
-                    .take(3)
-                    .join(' ') ??
-                    '' + '...',
-                textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
-              ),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
             ),
 
             const SizedBox(height: 16),
@@ -418,11 +374,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Harga'),
-<<<<<<< HEAD
                       Text('${widget.product.price}')
-=======
-                      Text('${widget.product['price']}')
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                     ],
                   ),
                 ],
@@ -522,10 +474,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-<<<<<<< HEAD
                 
-=======
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                 color: Colors.grey.shade100,
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -640,11 +589,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-<<<<<<< HEAD
                         widget.product.price,
-=======
-                        widget.product['price'],
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -660,10 +605,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       // Tombol Beli Sekarang
                       ElevatedButton(
                         onPressed: () {
-<<<<<<< HEAD
 
-=======
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Beli Sekarang diklik!')),
                           );
@@ -690,14 +632,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         child: IconButton(
                           icon: const Icon(Icons.shopping_cart, color: Colors.orange),
                           onPressed: () {
-<<<<<<< HEAD
                             Provider.of<CartModel>(context, listen: false).add(widget.product);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Berhasil di tambahkan')),
-=======
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Tambah ke keranjang')),
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
                             );
                           },
                         ),
@@ -710,15 +647,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           ],
         ),
       ),
-<<<<<<< HEAD
     );
-=======
-
-
-    );
-
-
-
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
   }
 }

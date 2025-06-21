@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/cart_model.dart';
 import '../models/history_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'riwayat_page.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
@@ -39,7 +41,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     int totalHarga = subtotalProduk + shippingCost + adminBankFee;
 
     // Contoh alamat
-    final alamat = 'Jl. Merdeka No. 123, Bandung, Jawa Barat';
+    final alamat = 'Lorem Ipsu simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown ';
 
     // Daftar metode pembayaran
     final paymentMethods = [
@@ -71,9 +73,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.orange[50],
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.orange),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +131,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         Card(
                           elevation: 2,
                           child: ListTile(
-                            leading: Image.asset(product.image, width: 50),
+                            leading: Image.network(product.image, width: 50, errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.broken_image);
+                            }),
                             title: Text(product.name),
                             subtitle: Text('Jumlah: ${cartItem.quantity}'),
                             trailing: Text(
@@ -156,9 +157,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
+                        GridView.count(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                          childAspectRatio: 2.8, // proporsional agar bentuk tombol tidak tinggi
                           children: paymentMethods.map((method) {
                             final isSelected = selectedPaymentMethod == method;
                             return GestureDetector(
@@ -168,27 +173,25 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
                                 decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? Colors.orange
-                                      : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(20),
+                                  color: isSelected ? Colors.orange : Colors.transparent,
                                   border: Border.all(color: Colors.orange),
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
+                                alignment: Alignment.center,
                                 child: Text(
                                   method,
                                   style: TextStyle(
-                                    color:
-                                    isSelected ? Colors.white : Colors.orange,
+                                    color: isSelected ? Colors.white : Colors.orange,
                                     fontWeight: FontWeight.w600,
+                                    fontSize: 14,
                                   ),
                                 ),
                               ),
                             );
                           }).toList(),
                         ),
+
                         const SizedBox(height: 20),
                       ],
                     );
@@ -203,9 +206,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.orange[50],
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.orange),
+
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,9 +249,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.orange[50],
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.orange),
+
               ),
               child: Column(
                 children: [
@@ -272,9 +271,26 @@ class _CheckoutPageState extends State<CheckoutPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: () {
+                onPressed: () async {
                   final historyProvider = Provider.of<HistoryModel>(context, listen: false);
-                  historyProvider.addToHistory(cart.items); // simpan semua item pembelian ke history
+                  final purchasedItems = cart.items;
+
+                  // Simpan ke Firestore
+                  for (var item in purchasedItems) {
+                    final product = item.product;
+
+                    await FirebaseFirestore.instance.collection('riwayat_pembelian').add({
+                      'nama_produk': product.name,
+                      'harga': product.price,
+                      'jumlah': item.quantity,
+                      'total_harga': int.parse(product.price) * item.quantity,
+                      'gambar': product.image,
+                      'tanggal': Timestamp.now(), // waktu transaksi
+                    });
+                  }
+
+                  // Tambah ke local history
+                  historyProvider.addToHistory(purchasedItems);
 
                   cart.clearCart(); // kosongkan cart setelah beli
 
@@ -282,16 +298,22 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     const SnackBar(content: Text('Pembayaran dikonfirmasi!')),
                   );
 
-                  // Pindah ke halaman riwayat
-                  Navigator.pushNamed(context, '/riwayat');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RiwayatPage()),
+                  );
                 },
-                icon: const Icon(Icons.payment),
+
+
                 label: const Text('Konfirmasi Pembayaran'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   textStyle: const TextStyle(fontSize: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero, // <- Tombol kotak
+                  ),
                 ),
               ),
             ),

@@ -18,4 +18,18 @@ class Product {
     required this.imageTop,
     required this.imageBottom,
   });
+
+  factory Product.fromFirestore(Map<String, dynamic> data) {
+    return Product(
+      name: data['name'] ?? '',
+      price: data['price'] ?? '',
+      desc: data['desc'] ?? '',
+      image: data['image'] ?? '',
+      imageSide: data['imageSide'] ?? '',
+      imageBack: data['imageBack'] ?? '',
+      imageTop: data['imageTop'] ?? '',
+      imageBottom: data['imageBottom'] ?? '',
+    );
+  }
 }
+

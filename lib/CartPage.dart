@@ -24,40 +24,41 @@ class CartPage extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child:
-                cart.items.isEmpty
-                    ? const Center(child: Text('Keranjang kosong'))
-                    : ListView.builder(
-                      itemCount: cart.items.length,
-                      itemBuilder: (context, index) {
-                        final cartItem = cart.items[index];
-                        final product = cartItem.product;
+            child: cart.items.isEmpty
+                ? const Center(child: Text('Keranjang kosong'))
+                : ListView.builder(
+              itemCount: cart.items.length,
+              itemBuilder: (context, index) {
+                final cartItem = cart.items[index];
+                final product = cartItem.product;
 
-                        return ListTile(
-                          leading: Image.asset(product.image, width: 50),
-                          title: Text(product.name),
-                          subtitle: Text('Harga: ${product.price}'),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.remove),
-                                onPressed: () {
-                                  cart.remove(product);
-                                },
-                              ),
-                              Text('${cartItem.quantity}'),
-                              IconButton(
-                                icon: const Icon(Icons.add),
-                                onPressed: () {
-                                  cart.add(product);
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                return ListTile(
+                  leading: Image.network(product.image, width: 50, errorBuilder: (context, error, stackTrace) {
+                    return const Icon(Icons.broken_image);
+                  }),
+                  title: Text(product.name),
+                  subtitle: Text('Harga: ${product.price}'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () {
+                          cart.remove(product);
+                        },
+                      ),
+                      Text('${cartItem.quantity}'),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {
+                          cart.add(product);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
           // Footer section
           Container(
@@ -72,10 +73,7 @@ class CartPage extends StatelessWidget {
                   children: [
                     const Text(
                       'Total',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                     Text(
                       'Rp $totalHarga',
@@ -92,17 +90,12 @@ class CartPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   ),
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const CheckoutPage(),
-                      ),
+                      MaterialPageRoute(builder: (context) => const CheckoutPage()),
                     );
                   },
                   child: const Text('Beli Sekarang'),

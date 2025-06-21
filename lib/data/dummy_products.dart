@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import '../models/product.dart';
 
 final List<Product> products = [
@@ -22,43 +21,4 @@ final List<Product> products = [
     imageTop: 'assets/images/nike_air_top.png',
     imageBottom: 'assets/images/nike_air_bottom.png',
   ),
-=======
-final List<Map<String, dynamic>> products = [
-  {
-    'image': 'assets/images/product1.png',
-    'name': 'Sepatu Gunung',
-    'desc': 'Tahan air',
-    'price': 'Rp 499.000',
-  },
-  {
-    'image': 'assets/images/product2.png',
-    'name': 'Sepatu Hiking',
-    'desc': 'Anti licin',
-    'price': 'Rp 579.000',
-  },
-  {
-    'image': 'assets/images/product3.png',
-    'name': 'Boots Eiger',
-    'desc': 'Outdoor keren',
-    'price': 'Rp 629.000',
-  },
-  {
-    'image': 'assets/images/product4.png',
-    'name': 'Trail Runner',
-    'desc': 'Nyaman dipakai',
-    'price': 'Rp 459.000',
-  },
-  {
-    'image': 'assets/images/product5.png',
-    'name': 'Sneaker Eiger',
-    'desc': 'Kasual stylish',
-    'price': 'Rp 399.000',
-  },
-  {
-    'image': 'assets/images/product1.png',
-    'name': 'Sepatu Tactical',
-    'desc': 'Kuat & awet',
-    'price': 'Rp 549.000',
-  },
->>>>>>> b6e7478ddba09568659a861adec3d706e16e5b8b
 ];
