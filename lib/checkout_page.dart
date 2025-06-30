@@ -17,14 +17,35 @@ class _CheckoutPageState extends State<CheckoutPage> {
   double _biayaPengiriman = 15000.0;
   String _metodePembayaran = 'Transfer Bank';
 
+  double _currentDiscountAmount = 0.0; 
+  String? _appliedVoucherCodeFromCart;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadVoucherInfoFromCart();
+    });
+  }
+
+  void _loadVoucherInfoFromCart() {
+    final cart = Provider.of<CartModel>(context, listen: false);
+
+    setState(() {
+      _currentDiscountAmount = cart.appliedDiscountAmount; 
+      _appliedVoucherCodeFromCart = cart.appliedVoucherCode; 
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartModel>(context);
     final history = Provider.of<HistoryModel>(context, listen: false);
-
-    final double subtotalProduk = cart.totalPrice;
+    final double subtotalProduk = cart.totalPrice; 
     final double adminBank = 5000.0;
-    final double totalPembayaran = subtotalProduk + _biayaPengiriman + adminBank;
+    final double totalPembayaranFinal = subtotalProduk - _currentDiscountAmount + _biayaPengiriman + adminBank;
+
 
     return Scaffold(
       appBar: AppBar(
@@ -127,16 +148,26 @@ class _CheckoutPageState extends State<CheckoutPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _buildPriceRow('Subtotal Produk', subtotalProduk),
+                
+                if (_currentDiscountAmount > 0)
+                  _buildPriceRow('Diskon Voucher', -_currentDiscountAmount), 
                 _buildPriceRow('Biaya Pengiriman', _biayaPengiriman),
                 _buildPriceRow('Biaya Admin', adminBank),
                 const Divider(height: 20),
-                _buildPriceRow('Total Pembayaran', totalPembayaran, isTotal: true),
+                _buildPriceRow('Total Pembayaran', totalPembayaranFinal, isTotal: true), 
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: cart.items.isEmpty ? null : () {
-                      history.addOrder(cart.items);
+                      
+                      history.addOrder(
+                        cart.items,
+                        subtotalProduk, 
+                        _currentDiscountAmount, 
+                        totalPembayaranFinal, 
+                        _appliedVoucherCodeFromCart, 
+                      );
                       cart.clearCart();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Pesanan berhasil dibuat!')),
@@ -189,6 +220,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   Widget _buildPriceRow(String label, double amount, {bool isTotal = false}) {
+    Color textColor = Colors.black87;
+    if (isTotal) {
+      textColor = Colors.orange;
+    } else if (label.contains('Diskon')) { 
+      textColor = Colors.red; 
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -199,6 +237,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             style: TextStyle(
               fontSize: isTotal ? 16 : 14,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
+              color: textColor, 
             ),
           ),
           Text(
@@ -206,7 +245,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             style: TextStyle(
               fontSize: isTotal ? 16 : 14,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              color: isTotal ? Colors.orange : Colors.black87,
+              color: textColor, 
             ),
           ),
         ],

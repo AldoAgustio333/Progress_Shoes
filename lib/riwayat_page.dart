@@ -1,9 +1,8 @@
-// lib/riwayat_page.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:e_shoes/models/history_model.dart';
-import 'package:e_shoes/models/cart_model.dart';
-import 'detail_riwayat_page.dart'; 
+import 'package:e_shoes/models/cart_model.dart'; 
+import 'detail_riwayat_page.dart';
 import 'CartPage.dart';
 
 class RiwayatPage extends StatelessWidget {
@@ -12,7 +11,8 @@ class RiwayatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final historyProvider = Provider.of<HistoryModel>(context);
-    final orders = historyProvider.orders;
+    
+    final orders = historyProvider.orders; 
 
     return Scaffold(
       appBar: AppBar(
@@ -56,11 +56,13 @@ class RiwayatPage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               itemCount: orders.length,
               itemBuilder: (context, orderIndex) {
-                final orderItems = orders[orderIndex];
-                double totalOrderPrice = 0.0;
+                
+                final order = orders[orderIndex]; 
+                final orderItems = order.items; 
+
+                double totalOrderPrice = order.finalTotalPrice; 
                 int totalItems = 0;
                 for (var item in orderItems) {
-                  totalOrderPrice += item.product.price * item.quantity;
                   totalItems += item.quantity;
                 }
 
@@ -77,7 +79,8 @@ class RiwayatPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Pesanan #${orderIndex + 1}',
+                              
+                              'Pesanan #${orderIndex + 1} - ${order.orderDate.day}/${order.orderDate.month}/${order.orderDate.year}', // <--- Perubahan di sini
                               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                             Text(
@@ -116,9 +119,8 @@ class RiwayatPage extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DetailRiwayatPage(
-                                      item: orderItems.first, 
-                                    ),
+                                    
+                                    builder: (context) => DetailRiwayatPage(order: order), // <--- Perubahan di sini
                                   ),
                                 );
                               },

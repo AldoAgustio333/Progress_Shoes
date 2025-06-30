@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:e_shoes/models/cart_model.dart';
+import 'package:e_shoes/models/cart_model.dart'; 
+import 'package:e_shoes/models/history_model.dart'; 
 
 class DetailRiwayatPage extends StatelessWidget {
+  
+  final Order order; 
 
-  final CartItem item;
-
-  const DetailRiwayatPage({super.key, required this.item});
+  const DetailRiwayatPage({super.key, required this.order}); 
 
   @override
   Widget build(BuildContext context) {
-    final product = item.product;
-    final double hargaBarang = product.price * item.quantity;
-    const double hargaJasaKirim = 15000.0;
-    const double adminBank = 5000.0;
-    final double totalPembayaran = hargaBarang + hargaJasaKirim + adminBank;
-    const String alamatTujuan = 'Jl. Merdeka No. 123, Bandung, Jawa Barat';
-    const String metodePengiriman = 'JNE Regular';
+    final double hargaBarang = order.subtotalBeforeDiscount; 
+    const double hargaJasaKirim = 15000.0; 
+    const double adminBank = 5000.0; 
+    final double totalPembayaran = order.finalTotalPrice;
+    final double diskonVoucher = order.discountAmount; 
+    final String? kodeVoucher = order.appliedVoucherCode; 
+
+    const String alamatTujuan = 'Jl. Merdeka No. 123, Bandung, Jawa Barat'; 
+    const String metodePengiriman = 'JNE Regular'; 
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +30,6 @@ class DetailRiwayatPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             _buildInfoCard(
               icon: Icons.local_shipping,
               iconColor: Colors.green,
@@ -35,7 +37,6 @@ class DetailRiwayatPage extends StatelessWidget {
               content: 'Pesanan telah sampai di alamat tujuan.',
             ),
             const SizedBox(height: 16),
-
             _buildInfoCard(
               icon: Icons.location_on,
               iconColor: Colors.orange,
@@ -43,35 +44,37 @@ class DetailRiwayatPage extends StatelessWidget {
               content: alamatTujuan,
             ),
             const SizedBox(height: 24),
-            
             const Text(
               'Rincian Produk',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const Divider(thickness: 1, height: 20),
-
-            ListTile(
-              leading: Image.asset(product.image, width: 60),
-              title: Text(product.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text('Jumlah: ${item.quantity}'),
-              trailing: Text('Rp${hargaBarang.toStringAsFixed(0)}'),
+            
+            Column(
+              children: order.items.map((cartItem) {
+                return ListTile(
+                  leading: Image.asset(cartItem.product.image, width: 60),
+                  title: Text(cartItem.product.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text('Jumlah: ${cartItem.quantity}'),
+                  trailing: Text('Rp${(cartItem.product.price * cartItem.quantity).toStringAsFixed(0)}'),
+                );
+              }).toList(),
             ),
             const Divider(thickness: 1, height: 20),
-
             const Text(
               'Rincian Pembayaran',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
-
             _buildPriceRow('Subtotal Produk', hargaBarang),
             _buildPriceRow('Biaya Pengiriman', hargaJasaKirim),
             _buildPriceRow('Biaya Admin', adminBank),
+            
+            if (diskonVoucher > 0)
+              _buildPriceRow('Diskon Voucher ${kodeVoucher != null ? '($kodeVoucher)' : ''}', diskonVoucher, isDiscount: true), // <--- Penambahan ini
             const Divider(height: 20, thickness: 1.5),
             _buildPriceRow('Total Pembayaran', totalPembayaran, isTotal: true),
-            
             const SizedBox(height: 24),
-
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -131,7 +134,7 @@ class DetailRiwayatPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPriceRow(String label, double amount, {bool isTotal = false}) {
+  Widget _buildPriceRow(String label, double amount, {bool isTotal = false, bool isDiscount = false}) { // <--- Perubahan di sini
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Row(
@@ -139,11 +142,12 @@ class DetailRiwayatPage extends StatelessWidget {
         children: [
           Text(label, style: TextStyle(fontSize: 14, color: Colors.grey.shade800)),
           Text(
-            'Rp${amount.toStringAsFixed(0)}',
+            
+            'Rp${isDiscount ? (-amount).toStringAsFixed(0) : amount.toStringAsFixed(0)}', // <--- Perubahan di sini
             style: TextStyle(
               fontSize: 14,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              color: isTotal ? Colors.orange : Colors.black,
+              color: isTotal ? Colors.orange : (isDiscount ? Colors.red : Colors.black), // <--- Warna merah untuk diskon
             ),
           ),
         ],

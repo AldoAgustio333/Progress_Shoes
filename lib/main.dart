@@ -1,32 +1,33 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart'; 
-import 'firebase_options.dart';                   
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'models/cart_model.dart';
 import 'models/history_model.dart';
-import 'models/product.dart';
+import 'models/product.dart'; 
 
 import 'CartPage.dart';
 import 'checkout_page.dart';
 import 'detail_riwayat_page.dart';
 import 'halaman_chat_toko.dart';
-import 'halaman_toko.dart'; 
+import 'halaman_toko.dart';
 import 'product_detail_page.dart';
 import 'riwayat_page.dart';
 import 'profile_page.dart';
 
-import 'home_page_content.dart'; 
-import 'search_page_content.dart'; 
-import 'store_page_content.dart'; 
+import 'home_page_content.dart';
+import 'search_page_content.dart';
+import 'store_page_content.dart';
 
-import 'catalog.dart'; 
+import 'catalog.dart';
 import 'order_detail_page.dart';
 
+import 'models/history_model.dart'; 
+
 void main() async {
-  
   WidgetsFlutterBinding.ensureInitialized();
-  
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -62,7 +63,13 @@ class MyApp extends StatelessWidget {
         '/cart': (context) => CartPage(),
         '/checkout': (context) => CheckoutPage(),
         '/riwayat': (context) => RiwayatPage(),
-        '/detail_riwayat': (context) => DetailRiwayatPage(item: ModalRoute.of(context)!.settings.arguments as CartItem),
+        '/detail_riwayat': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments;
+          if (args is Order) { 
+            return DetailRiwayatPage(order: args); 
+          }
+          return const Text('Error: Order detail not found or invalid type.');
+        },
         '/halaman_chat_toko': (context) => HalamanChatToko(),
         '/catalog': (context) => CatalogPage(),
         '/order_detail': (context) => OrderDetailPage(),
